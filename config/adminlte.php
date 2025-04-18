@@ -63,9 +63,9 @@ return [
     |
     */
 
-    'logo' => 'Multifilmes',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo' => '',
+    'logo_img' => 'img/logo.png',
+    'logo_img_class' => '',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'img/logo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -319,20 +319,35 @@ return [
             'text' => 'Banners',
             'url' => 'area_restrita/banners',
             'icon' => 'far fa-fw fa-image',
-        ],        
+        ],       
+        [
+            'text' => 'Soluções',
+            'url' => 'area_restrita/solucoes',
+            'icon' => 'far fa-fw fa-lightbulb',
+        ],      
+        [
+            'text' => 'Categorias',
+            'url' => 'area_restrita/categorias',
+            'icon' => 'fas fa-fw fa-medal',
+        ],      
+        [
+            'text' => 'Marcas',
+            'url' => 'area_restrita/marcas',
+            'icon' => 'fas fa-fw fa-bookmark',
+        ],                               
         [
             'text' => 'Produtos',
-            'url' => 'admin/pages',
+            'url' => 'area_restrita/produtos',
             'icon' => 'fas fa-fw fa-shopping-cart',
         ],   
         [
             'text' => 'Unidades',
-            'url' => 'admin/pages',
+            'url' => 'area_restrita/unidades',
             'icon' => 'fas fa-fw fa-store',
         ],   
         [
             'text' => 'blog',
-            'url' => 'admin/blog',
+            'url' => 'area_restrita /posts',
             'icon' => 'fas fa-fw fa-rss',
         ],        
         [
@@ -404,22 +419,25 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+               'active' => true,
+                'files' => [
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '//code.jquery.com/jquery-3.7.1.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '//cdn.datatables.net/2.0.1/js/dataTables.js',
+                    ],
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => '//cdn.datatables.net/2.0.1/css/dataTables.dataTables.css',
+                    ],
                 ],
             ],
         ],
@@ -470,6 +488,21 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Toastr' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
                 ],
             ],
         ],

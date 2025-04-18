@@ -6,27 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('banners', function (Blueprint $table) {
+        Schema::create('produtos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('titulo');
-            $table->string('subtitulo')->nullable();
-            $table->string('link')->nullable();
+            $table->string('nome');
+            $table->text('descricao')->nullable();
             $table->string('imagem')->nullable();
+            $table->string('slug')->unique();
             $table->boolean('ativo')->default(true);
+            $table->foreignId('marca_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('produtos');
     }
-};
+}; 

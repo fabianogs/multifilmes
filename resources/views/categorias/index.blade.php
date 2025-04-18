@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Unidades')
+@section('title', 'Categorias')
 
 @section('content')
 <br>
@@ -9,29 +9,23 @@
         <div class="col-md-12">
             <div class="card card-secondary">
                 <div class="card-body">
-                    <table class="table table-hover table-sm" id="unidadesTable">
+                    <table class="table table-hover table-sm" id="categoriasTable">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>UF</th>
-                                <th>Cidade</th>
-                                <th>URL</th>
                                 <th width="15%">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($unidades as $unidade)
-                                <tr class="clickable-row" data-id="{{ $unidade->id }}">
-                                    <td>{{ $unidade->nome }}</td>
-                                    <td>{{ $unidade->uf }}</td>
-                                    <td>{{ $unidade->cidade }}</td>
-                                    <td>{{ $unidade->url }}</td>
+                            @foreach($categorias as $categoria)
+                                <tr class="clickable-row" data-id="{{ $categoria->id }}">
+                                    <td>{{ $categoria->titulo }}</td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('unidades.edit', $unidade) }}" class="btn btn-primary btn-sm" title="Editar">
+                                            <a href="{{ route('categorias.edit', $categoria) }}" class="btn btn-primary btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('unidades.destroy', $unidade) }}')" title="Excluir">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('categorias.destroy', $categoria) }}')" title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -48,6 +42,7 @@
 @stop
 
 @section('css')
+    <link rel="stylesheet" href={{ asset('css/admin_custom.css') }}>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
@@ -55,6 +50,7 @@
 @stop
 
 @section('js')
+    <!-- DataTables -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
@@ -64,7 +60,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#unidadesTable').DataTable({
+            $('#categoriasTable').DataTable({
                 dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
                      '<"row"<"col-sm-12"tr>>' +
                      '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
@@ -73,7 +69,7 @@
                         text: 'Inserir',
                         className: 'btn btn-primary',
                         action: function (e, dt, node, config) {
-                            window.location.href = "{{ route('unidades.create') }}";
+                            window.location.href = "{{ route('categorias.create') }}";
                         }
                     }
                 ],
@@ -86,7 +82,7 @@
 
             $('.clickable-row').on('dblclick', function () {
                 const id = $(this).data('id');
-                const editUrl = `{{ url('unidades') }}/` + id + `/edit`;
+                const editUrl = `{{ url('categorias') }}/` + id + `/edit`;
                 window.location.href = editUrl;
             });
         });
@@ -142,4 +138,4 @@
             });
         @endif
     </script>
-@stop
+@stop 

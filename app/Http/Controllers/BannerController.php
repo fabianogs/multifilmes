@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -32,17 +33,26 @@ class BannerController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'subtitulo' => 'string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'imagem' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'link'=> 'required|string',
             'ativo' => 'boolean'
         ]);
 
         $banner = new Banner();
         $banner->titulo = $validated['titulo'];
         $banner->subtitulo = $validated['subtitulo'];
+        $banner->link = $validated['link'];
         
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('banners', 'public');
-            $banner->image = $imagePath;
+        if ($request->hasFile('imagem')) {
+            $file = $request->file('imagem');
+
+            $originalName   = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension      = $file->getClientOriginalExtension();
+            $random         = uniqid();
+            $filename = $originalName.'_'.$random.'.'.$extension;
+            
+            $path = $file->storeAs('banners',$filename, 'public');
+            $banner->imagem = $path;
         }
 
         $banner->ativo = $request->input('ativo', 0);
@@ -62,9 +72,10 @@ class BannerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Banner $banner)
+    public function edit($id)
     {
-        //
+        $banner = Banner::find($id);
+        return view('banners.edit', compact('banner'));
     }
 
     /**
@@ -72,7 +83,38 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner)
     {
-        //
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'subtitulo' => 'string|max:255',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'link'=> 'required|string',
+            'ativo' => 'boolean'
+        ]);
+
+        $banner->titulo = $validated['titulo'];
+        $banner->subtitulo = $validated['subtitulo'];
+        $banner->link = $validated['link'];
+        
+        if ($request->hasFile('imagem')) {
+            // Remove a imagem antiga se existir
+            if ($banner->imagem && Storage::exists('public/' . $banner->imagem)) {
+                Storage::delete('public/' . $banner->imagem);
+            }
+
+            $file = $request->file('imagem');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $random = uniqid();
+            $filename = $originalName.'_'.$random.'.'.$extension;
+            
+            $path = $file->storeAs('banners', $filename, 'public');
+            $banner->imagem = $path;
+        }
+
+        $banner->ativo = $request->input('ativo', 0);
+        $banner->save();
+
+        return redirect()->route('banners.index')->with('success', 'Banner atualizado com sucesso!');
     }
 
     /**
@@ -80,7 +122,26 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        //
+        if ($banner->imagem && Storage::exists('public/' . $banner->imagem)) {
+            Storage::delete('public/' . $banner->imagem);
+        }
+        
+        $banner->delete();
+        
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteImage($id)
+    {
+        $banner = Banner::findOrFail($id);
+        
+        if ($banner->imagem && Storage::exists('public/' . $banner->imagem)) {
+            Storage::delete('public/' . $banner->imagem);
+            $banner->imagem = null;
+            $banner->save();
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function set_ativo($id, Request $request){

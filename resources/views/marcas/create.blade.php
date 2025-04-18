@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Novo Produto')
+@section('title', 'Nova Marca')
 
 @section('content')
 <br>
@@ -9,9 +9,9 @@
         <div class="col-md-12">
             <div class="card card-secondary">
                 <div class="card-header">
-                    <h3 class="card-title">Novo Produto</h3>
+                    <h3 class="card-title">Nova Marca</h3>
                 </div>
-                <form action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('marcas.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -25,26 +25,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="descricao">Descrição</label>
-                            <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3">{{ old('descricao') }}</textarea>
-                            @error('descricao')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="marca_id">Marca</label>
-                            <select class="form-control @error('marca_id') is-invalid @enderror" id="marca_id" name="marca_id" required>
-                                <option value="">Selecione uma marca</option>
-                                @foreach($marcas as $marca)
-                                    <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
-                                        {{ $marca->nome }}
+                            <label for="categoria_id">Categoria</label>
+                            <select class="form-control @error('categoria_id') is-invalid @enderror" id="categoria_id" name="categoria_id" required>
+                                <option value="">Selecione uma categoria</option>
+                                @foreach($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                        {{ $categoria->titulo }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('marca_id')
+                            @error('categoria_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -52,7 +42,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imagem">Imagem (520x300px)</label>
+                            <label for="imagem">Imagem (150x150px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input @error('imagem') is-invalid @enderror" id="imagem" name="imagem" onchange="previewImage(this);">
@@ -69,16 +59,10 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="ativo" name="ativo" value="1" {{ old('ativo') ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="ativo">Ativo</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <a href="{{ route('produtos.index') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="{{ route('marcas.index') }}" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </form>
             </div>

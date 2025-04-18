@@ -20,6 +20,7 @@
                         <table class="table table-hover table-sm" id="table1">
                             <thead>
                                 <tr>
+                                    <th>Imagem</th>
                                     <th>Título</th>
                                     <th>Subtítulo</th>
                                     <th>Ativo?</th>
@@ -29,6 +30,13 @@
                             <tbody>
                                 @foreach ($banners as $item)
                                     <tr  class="clickable-row" data-id="{{ $item->id }}">
+                                        <td>
+                                            @if($item->imagem)
+                                                <img src="{{ asset('storage/' . $item->imagem) }}" alt="{{ $item->titulo }}" style="max-width: 100px; max-height: 50px; object-fit: cover;">
+                                            @else
+                                                <span class="text-muted">Sem imagem</span>
+                                            @endif
+                                        </td>
                                         <td>{{$item->titulo}}</td>
                                         <td>{{$item->subtitulo}}</td>
                                         <td style="text-align: center;">

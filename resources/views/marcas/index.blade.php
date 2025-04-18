@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Unidades')
+@section('title', 'Marcas')
 
 @section('content')
 <br>
@@ -9,29 +9,31 @@
         <div class="col-md-12">
             <div class="card card-secondary">
                 <div class="card-body">
-                    <table class="table table-hover table-sm" id="unidadesTable">
+                    <table class="table table-hover table-sm" id="marcasTable">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>UF</th>
-                                <th>Cidade</th>
-                                <th>URL</th>
+                                <th>Categoria</th>
+                                <th>Imagem</th>
                                 <th width="15%">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($unidades as $unidade)
-                                <tr class="clickable-row" data-id="{{ $unidade->id }}">
-                                    <td>{{ $unidade->nome }}</td>
-                                    <td>{{ $unidade->uf }}</td>
-                                    <td>{{ $unidade->cidade }}</td>
-                                    <td>{{ $unidade->url }}</td>
+                            @foreach($marcas as $marca)
+                                <tr class="clickable-row" data-id="{{ $marca->id }}">
+                                    <td>{{ $marca->nome }}</td>
+                                    <td>{{ $marca->categoria->titulo }}</td>
+                                    <td>
+                                        @if($marca->imagem)
+                                            <img src="{{ asset('storage/' . $marca->imagem) }}" alt="{{ $marca->nome }}" style="max-height: 50px;">
+                                        @endif
+                                    </td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('unidades.edit', $unidade) }}" class="btn btn-primary btn-sm" title="Editar">
+                                            <a href="{{ route('marcas.edit', $marca) }}" class="btn btn-primary btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('unidades.destroy', $unidade) }}')" title="Excluir">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('marcas.destroy', $marca) }}')" title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -64,7 +66,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#unidadesTable').DataTable({
+            $('#marcasTable').DataTable({
                 dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
                      '<"row"<"col-sm-12"tr>>' +
                      '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
@@ -73,7 +75,7 @@
                         text: 'Inserir',
                         className: 'btn btn-primary',
                         action: function (e, dt, node, config) {
-                            window.location.href = "{{ route('unidades.create') }}";
+                            window.location.href = "{{ route('marcas.create') }}";
                         }
                     }
                 ],
@@ -86,7 +88,7 @@
 
             $('.clickable-row').on('dblclick', function () {
                 const id = $(this).data('id');
-                const editUrl = `{{ url('unidades') }}/` + id + `/edit`;
+                const editUrl = `{{ url('marcas') }}/` + id + `/edit`;
                 window.location.href = editUrl;
             });
         });

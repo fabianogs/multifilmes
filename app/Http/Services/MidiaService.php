@@ -9,50 +9,12 @@ use App\Models\Modelo;
 use FFMpeg\FFMpeg;
 
 class MidiaService {
-    public function processarMidia($arquivo, $modeloId, $principal, $tipo) {
-        $modelo = Modelo::find($modeloId);
-
-        if (!$modelo) {
-            Log::error('Modelo não encontrado.', ['modeloId' => $modeloId]);
-            return redirect()->back()->with('error', 'Modelo não encontrado.');
-        }
-    
-        // Se for FOTO e for principal, remove a anterior
-        if ($tipo === 'foto' && $principal == 1) {
-            $principal_existe = Midia::where('modelo_id', $modeloId)
-                ->where('tipo', 'foto')
-                ->where('principal', 1)
-                ->first();
-    
-            if ($principal_existe) {
-                $caminhoArquivo = public_path($principal_existe->caminho);
-                if (file_exists($caminhoArquivo)) {
-                    unlink($caminhoArquivo);
-                }
-                $principal_existe->delete();
-            }
-        }
-    
-        if ($tipo === 'video' && $principal == 1) {
-            $principal_existe = Midia::where('modelo_id', $modeloId)
-                ->where('tipo', 'video')
-                ->where('principal', 1)
-                ->first();
-    
-            if ($principal_existe) {
-                $caminhoArquivo = public_path($principal_existe->caminho);
-                if (file_exists($caminhoArquivo)) {
-                    unlink($caminhoArquivo);
-                }
-                $principal_existe->delete();
-            }
-        }
-    
+    public function processarMidia($arquivo, $origem, $tipo) {
         // Define o caminho para salvar a mídia
-        $caminho = 'modelos/' . $modelo->slug . '/midias';
+        $caminho = 'midias/' . $origem . '/' . $tipo;
     
         // Gera um nome único
-        $nomeBase = $modelo->slug . '-cp' . $modeloId;
+        $nomeBase = $arquivo->getClientOriginalName();
         $timestamp = now()->format('Ymd_His');
         $extensao = pathinfo($arquivo->getClientOriginalName(), PATHINFO_EXTENSION); // Extrai a extensão do nome original
         $nome = $nomeBase . $timestamp . '.' . $extensao;
