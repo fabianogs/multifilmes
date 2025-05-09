@@ -106,3 +106,44 @@ label {
     margin-bottom: .5rem;
     font-size: smaller;
 }
+
+.toggle-status {
+    width: 36px;
+    height: 16px;
+    position: relative;
+    appearance: none;
+    background: #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}           
+
+.toggle-status {
+    width: 36px;
+    height: 16px;
+    position: relative;
+    appearance: none;
+    background: #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+.toggle-status:checked {
+    background: #28a745;
+}
+.toggle-status:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.toggle-status:checked:before {
+    left: 20px;
+}

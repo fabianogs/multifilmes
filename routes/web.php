@@ -65,10 +65,15 @@ Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     Route::delete('/produtos/{produto}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produtos.destroy');
     Route::post('/produtos/set_ativo/{id}', [App\Http\Controllers\ProdutoController::class, 'set_ativo'])->name('produtos.set_ativo');
 
-    Route::resource('unidades', UnidadeController::class);    
-
-    // Rotas para Posts
-    Route::resource('posts', PostController::class);
+    // Rotas para Produtos
+    Route::get('/posts', [App\Http\Controllers\PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [App\Http\Controllers\PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{id}', [App\Http\Controllers\PostController::class, 'show'])->name('posts.show');
+    Route::get('/posts/{id}/edit', [App\Http\Controllers\PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{id}', [App\Http\Controllers\PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy');
+    Route::post('/posts/set_ativo/{id}', [App\Http\Controllers\PostController::class, 'set_ativo'])->name('posts.set_ativo');
     Route::post('posts/upload', [PostController::class, 'upload'])->name('posts.upload');
 });
 

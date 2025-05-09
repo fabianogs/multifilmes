@@ -346,8 +346,8 @@ return [
             'icon' => 'fas fa-fw fa-store',
         ],   
         [
-            'text' => 'blog',
-            'url' => 'area_restrita /posts',
+            'text' => 'Blog',
+            'url' => 'area_restrita/posts',
             'icon' => 'fas fa-fw fa-rss',
         ],        
         [
@@ -356,11 +356,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Site',
-                    'url' => '#',
+                    'url' => 'area_restrita/config',
                 ],
                 [
                     'text' => 'SEO',
-                    'url' => '#',
+                    'url' => 'area_restrita/SEO',
                 ],                
                 [
                     'text' => 'Meu perfil',
@@ -368,12 +368,12 @@ return [
                     'icon' => 'fas fa-fw fa-user',
                     'submenu' => [
                         [
-                            'text' => 'profile',
+                            'text' => 'Perfil',
                             'url' => 'admin/settings',
                             'icon' => 'fas fa-fw fa-user',
                         ],
                         [
-                            'text' => 'change_password',
+                            'text' => 'Mudar senha',
                             'url' => 'admin/settings',
                             'icon' => 'fas fa-fw fa-lock',
                         ],
@@ -418,29 +418,6 @@ return [
     */
 
     'plugins' => [
-        'Datatables' => [
-            'active' => true,
-            'files' => [
-               'active' => true,
-                'files' => [
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => '//code.jquery.com/jquery-3.7.1.js',
-                    ],
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => '//cdn.datatables.net/2.0.1/js/dataTables.js',
-                    ],
-                    [
-                        'type' => 'css',
-                        'asset' => true,
-                        'location' => '//cdn.datatables.net/2.0.1/css/dataTables.dataTables.css',
-                    ],
-                ],
-            ],
-        ],
         'Select2' => [
             'active' => false,
             'files' => [

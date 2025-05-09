@@ -13,7 +13,7 @@
                         <thead>
                             <tr>
                                 <th>Título</th>
-                                <th>Categoria</th>
+                                <th>Chamada Curta</th>
                                 <th>Status</th>
                                 <th width="15%">Ações</th>
                             </tr>
@@ -22,18 +22,25 @@
                             @foreach($posts as $post)
                                 <tr class="clickable-row" data-id="{{ $post->id }}">
                                     <td>{{ $post->titulo }}</td>
-                                    <td>{{ $post->categoria->nome }}</td>
+                                    <td>{{ $post->chamada_curta }}</td>
                                     <td>
-                                        <span class="badge badge-{{ $post->ativo ? 'success' : 'danger' }}">
-                                            {{ $post->ativo ? 'Ativo' : 'Inativo' }}
-                                        </span>
+                                        <input 
+                                            type="checkbox" 
+                                            class="toggle-ativo btn-sm" 
+                                            data-id="{{ $post->id }}" 
+                                            {{ $post->ativo ? 'checked' : '' }} 
+                                            data-toggle="toggle" 
+                                            data-on="Ativo" 
+                                            data-off="Inativo" 
+                                            data-onstyle="success" 
+                                            data-offstyle="danger">
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('posts.edit', $post) }}" class="btn btn-primary btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('posts.destroy', $post) }}')" title="Excluir">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteItem('{{ route('posts.destroy', $post->id) }}')" title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -54,6 +61,46 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+    <style>
+        /* Força altura menor no botão principal */
+        .toggle.btn {
+            height: 1.4rem !important;
+            min-height: 1.4rem !important;
+            padding: 0 0.4rem !important;
+            font-size: 0.6rem !important;
+            line-height: 1.1rem !important;
+        }
+    
+        /* Ajusta altura interna dos botões ON/OFF */
+        .toggle-group .btn {
+            height: 1.4rem !important;
+            min-height: 1.4rem !important;
+            padding: 0 0.3rem !important;
+            font-size: 0.6rem !important;
+            line-height: 1.1rem !important;
+        }
+    
+        /* Impede quebra de linha nos textos internos */
+        .toggle .toggle-on,
+        .toggle .toggle-off {
+            white-space: nowrap;
+        }
+    
+        /* Garante que a célula da tabela alinhe verticalmente */
+        .table td .toggle {
+            margin-top: -2px;
+            vertical-align: middle;
+        }
+    
+        /* Ajusta largura do botão toggle para não parecer gigante */
+        .toggle.btn-sm {
+            width: auto !important;
+        }
+    </style>
+    
+    
 @stop
 
 @section('js')
@@ -64,6 +111,8 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -144,5 +193,27 @@
                 positionClass: "toast-top-right"
             });
         @endif
+
+        $(document).ready(function () {
+            $('.toggle-ativo').change(function () {
+                const postId = $(this).data('id');
+                const ativo = $(this).prop('checked') ? 1 : 0;
+
+                $.ajax({
+                    url: '{{ route('posts.set_ativo', ':id') }}'.replace(':id', postId),
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        ativo: ativo
+                    },
+                    success: function (response) {
+                        toastr.success(response.message || 'Status atualizado com sucesso!', 'Sucesso');
+                    },
+                    error: function () {
+                        toastr.error('Não foi possível atualizar o status.', 'Erro');
+                    }
+                });
+            });
+        });
     </script>
 @stop

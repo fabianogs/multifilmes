@@ -29,10 +29,9 @@
                                             <img src="{{ asset('storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="max-height: 50px;">
                                         @endif
                                     </td>
-                                    <td>
-                                        <span class="badge badge-{{ $produto->ativo ? 'success' : 'danger' }}">
-                                            {{ $produto->ativo ? 'Ativo' : 'Inativo' }}
-                                        </span>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" class="toggle-status" data-id="{{ $produto->id }}" 
+                                            {{ $produto->ativo? 'checked' : '' }} data-toggle="switch">
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
@@ -56,6 +55,7 @@
 @stop
 
 @section('css')
+    <link rel="stylesheet" href={{ asset('css/admin_custom.css') }}>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
@@ -140,6 +140,31 @@
                 }
             });
         }
+
+        $('.toggle-status').on('change', function() {
+            let itemId = $(this).data('id'); 
+            let isChecked = $(this).is(':checked') ? 1 : 0;
+
+            let url = "{{ route('produtos.set_ativo', ['id' => 'PLACEHOLDER']) }}";
+            url = url.replace('PLACEHOLDER', itemId);
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ativo: isChecked
+                },
+                success: function(response) {
+                    toastr.success('Status atualizado com sucesso!');
+                },
+                error: function(xhr) {
+                    toastr.error('Erro ao atualizar status.');
+                    // Opcional: reverter o toggle em caso de erro
+                    $(this).prop('checked', !isChecked);
+                }
+            });
+        });        
 
         @if(session('toastr'))
             toastr.{{ session('toastr.type') }}('{{ session('toastr.message') }}', '{{ session('toastr.title') }}', {

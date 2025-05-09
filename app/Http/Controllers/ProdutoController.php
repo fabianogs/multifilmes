@@ -126,4 +126,20 @@ class ProdutoController extends Controller
         $produto->delete();
         return response()->json(['success' => true]);
     }
+
+    public function set_ativo($id, Request $request){
+        $item = Produto::findOrFail($id);
+        $item->ativo = $request->input('ativo', 0); // Define como 0 se não enviado
+        $item->save();
+    
+        // Log::info($plano->ativo ? 'Plano ativado' : 'Plano desativado', [
+        //     'usuario' => auth()->user()->name,
+        //     'editado' => $plano->nome,
+        // ]);
+    
+        return response()->json([
+            'success' => true,
+            'ativo' => $item->ativo
+        ]);
+    }        
 }

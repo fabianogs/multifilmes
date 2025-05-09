@@ -51,7 +51,7 @@ class BannerController extends Controller
             $random         = uniqid();
             $filename = $originalName.'_'.$random.'.'.$extension;
             
-            $path = $file->storeAs('banners',$filename, 'public');
+            $path = $file->storeAs('img/banners',$filename, 'public');
             $banner->imagem = $path;
         }
 

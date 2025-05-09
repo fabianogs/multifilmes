@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('midias', function (Blueprint $table) {
+        Schema::create('imagens', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('caminho');
-            $table->string('tipo');
-            $table->string('nome');
+            $table->string('nome_arquivo');
+            $table->string('thumbnail')->nullable();
             $table->boolean('ativo')->default(true);
-            $table->string('origem');
-            $table->string('thumbnail');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('midias');
+        Schema::dropIfExists('imagens');
     }
 };

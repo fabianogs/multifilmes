@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Solucao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
 
 class SolucaoController extends Controller
 {
@@ -34,16 +35,26 @@ class SolucaoController extends Controller
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
         ]);
-
+    
         $validated['slug'] = Str::slug($request->titulo);
-
-        Solucao::create($validated);
-
-        return redirect()->route('solucoes.index')->with('toastr', [
-            'type' => 'success',
-            'message' => 'Solução criada com sucesso!',
-            'title' => 'Sucesso'
-        ]);
+    
+        try {
+            Solucao::create($validated);
+    
+            return redirect()->route('solucoes.index')->with('toastr', [
+                'type' => 'success',
+                'message' => 'Solução criada com sucesso!',
+                'title' => 'Sucesso'
+            ]);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) { // Código 1062 = Duplicate entry (MySQL)
+                return back()
+                    ->withInput()
+                    ->withErrors(['titulo' => 'Já existe uma solução com esse título. Por favor, escolha outro.']);
+            }
+    
+            throw $e; // outros erros não tratados
+        }
     }
 
     /**

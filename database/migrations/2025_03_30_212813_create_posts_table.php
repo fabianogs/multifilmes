@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('titulo');
             $table->string('slug')->unique();
             $table->string('conteudo')->nullable();
-            $table->string('thumb')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('chamada_curta')->nullable();
             $table->string('link_video')->nullable();
-            $table->boolean('esta_publicado')->default(false);
-            $table->boolean('exiir_franqueado')->default(false);
+            $table->boolean('ativo')->default(false);
+            $table->boolean('exibir_franqueado')->default(true);
+            $table->string('imagem_principal')->nullable();
             $table->timestamps();
         });
     }
