@@ -12,7 +12,7 @@ class ConfigController extends Controller
     public function edit()
     {
         $config = Config::findOrFail(1);
-        return view("admin.config.edit", compact("config"));
+        return view("config.edit", compact("config"));
     }
 
     public function update(Request $request, $id)
@@ -42,7 +42,7 @@ class ConfigController extends Controller
             $item->email_host = $request->email_host;
             $item->cnpj = $request->cnpj;
         }
-        
+
         try {
             $item->save();
             Log::info('Dados de configuração editados.',[
@@ -50,12 +50,10 @@ class ConfigController extends Controller
                 'edição' => $item->nome,
             ]);
 
-            if ( $request->texto_contrato) {
-                return redirect()->route('config.edit_contrato')->with('success', 'Texto do contrato editado com sucesso.');
-            }
             return redirect()->route('config')->with('success', 'Item editado com sucesso.');
         }
-        catch (\Throwable $th) {
+        catch (\Throwable $th) {~
+            dd($th->getMessage());
             return redirect()->route('config')->with('error', 'Erro ao editar item. \nCódigo erro:'.$th->getMessage());
         }     
     }

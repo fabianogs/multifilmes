@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->string('slug')->unique();
-            $table->string('conteudo')->nullable();
+            $table->text('conteudo')->nullable();
             $table->string('thumbnail')->nullable();
             $table->string('chamada_curta')->nullable();
             $table->string('link_video')->nullable();

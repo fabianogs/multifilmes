@@ -15,16 +15,16 @@ class SeoController extends Controller
      */
     public function index()
     {
-		$seo = SEO::where('status',1)->get();
+		$itens = SEO::all();
 		if (request()->is('area_restrita*')) {
-			return view('admin.seo.index', compact('seo'));
+			return view('seo.index', compact('itens'));
 		}
         	return response()->json(['seo' => $seo]);
     }
 
     public function create()
     {
-        return view('admin.seo.create');
+        return view('seo.create');
     }
 
     public function store(Request $request)
@@ -42,7 +42,7 @@ class SeoController extends Controller
     public function edit($id)
     {
         $seo = SEO::find($id);
-        return view('admin.seo.edit', compact('seo'));
+        return view('seo.edit', compact('seo'));
     }
 
     public function update(Request $request, $id)

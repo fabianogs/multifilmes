@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('configs', function (Blueprint $table) {
+        Schema::create('config', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('email')->nullable();
@@ -32,7 +32,10 @@ return new class extends Migration
             $table->string('email_port')->nullable();
             $table->string('email_username')->nullable();
             $table->string('email_password')->nullable();
-            $table->string('email_host')->nullable();            
+            $table->string('email_host')->nullable();       
+            $table->string('celular')->nullable();
+            $table->string('fone1')->nullable();
+            $table->string('fone2')->nullable();     
         });
     }
 

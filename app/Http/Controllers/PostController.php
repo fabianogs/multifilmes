@@ -184,139 +184,6 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        // Validação dos campos
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
-            'chamada_curta' => 'nullable|string|max:255',
-            'conteudo' => 'required|string',
-            'imagem_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=1030,min_height=600',
-            'link_video' => 'nullable|url',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'galeria.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=1030,min_height=600',
-            'ativo' => 'boolean',
-            'exibir_franqueado' => 'boolean'
-        ]);
-
-        $post = Post::findOrFail($id);
-
-        // Verificar se pelo menos imagem_principal ou link_video foi fornecido
-        if (!$request->hasFile('imagem_principal') && empty($request->link_video) && empty($post->imagem_principal) && empty($post->link_video)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('toastr', [
-                    'type' => 'error',
-                    'message' => 'É necessário informar uma Imagem Principal ou um Link de Vídeo',
-                    'title' => 'Erro de validação'
-                ]);
-        }
-
-        // Atualizar dados do post
-        $post->titulo = $validated['titulo'];
-        $post->chamada_curta = $validated['chamada_curta'] ?? null;
-        $post->conteudo = $validated['conteudo'];
-        $post->link_video = $validated['link_video'] ?? $post->link_video;
-        $post->ativo = $request->has('ativo') ? 1 : 0;
-        $post->exibir_franqueado = $request->has('exibir_franqueado') ? 1 : 0;
-        $post->slug = Str::slug($validated['titulo']);
-        $post->save();
-
-        $dirBase = 'posts/' . $post->id;
-
-        // Processar a imagem principal
-        if ($request->hasFile('imagem_principal')) {
-            // Excluir a imagem anterior, se existir
-            if ($post->imagem_principal) {
-                Storage::disk('public')->delete($post->imagem_principal);
-            }
-
-            $file = $request->file('imagem_principal');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $random = Str::random(10);
-            $filename = $originalName . '_' . $random . '.' . $extension;
-            
-            $path = $file->storeAs($dirBase, $filename, 'public');
-            $post->imagem_principal = $path;
-        }
-
-        // Processar o thumbnail
-        if ($request->hasFile('thumbnail')) {
-            // Excluir o thumbnail anterior, se existir
-            if ($post->thumb) {
-                Storage::disk('public')->delete($post->thumb);
-            }
-
-            $file = $request->file('thumbnail');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $random = Str::random(10);
-            $filename = $originalName . 'thumbnail' . $random . '.' . $extension;
-            
-            $path = $file->storeAs($dirBase, $filename, 'public');
-            $post->thumb = $path;
-        }
-
-        // Salvar o post
-        $post->save();
-
-        // Processar as imagens excluídas da galeria
-        if ($request->has('remove_imagens')) {
-            foreach ($request->input('remove_imagens') as $imagemId) {
-                $imagem = Imagem::find($imagemId);
-                if ($imagem && $imagem->post_id == $post->id) {
-                    // Excluir os arquivos físicos
-                    Storage::disk('public')->delete($imagem->caminho);
-                    Storage::disk('public')->delete($imagem->thumbnail);
-                    
-                    // Excluir o registro
-                    $imagem->delete();
-                }
-            }
-        }
-
-        // Processar as novas imagens da galeria
-        if ($request->hasFile('galeria')) {
-            foreach ($request->file('galeria') as $index => $file) {
-                if (in_array($index, $request->input('imagens_indices', []))) {
-                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $extension = $file->getClientOriginalExtension();
-                    $random = Str::random(10);
-                    $filename = $originalName . '_' . $random . '.' . $extension;
-                    $thumbnailFilename = $originalName . '_thumb_' . $random . '.' . $extension;
-                    
-                    // Salvar a imagem original
-                    $path = $file->storeAs($dirBase.'/galeria', $filename, 'public');
-                    
-                    // Criar e salvar o thumbnail
-                    $thumbnailPath = $this->createThumbnail($file, $dirBase.'/galeria/thumbs', $thumbnailFilename);
-                    
-                    // Criar registro na tabela de imagens
-                    $imagemPost = new Imagem();
-                    $imagemPost->post_id = $post->id;
-                    $imagemPost->caminho = $path;
-                    $imagemPost->nome_arquivo = $filename;
-                    $imagemPost->thumbnail = $thumbnailPath;
-                    $imagemPost->save();
-                }
-            }
-        }
-
-        return redirect()->route('posts.index')
-            ->with('toastr', [
-                'type' => 'success',
-                'message' => 'Post atualizado com sucesso!',
-                'title' => 'Sucesso'
-            ]);
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -441,5 +308,219 @@ class PostController extends Controller
         return response()->json(['success' => true, 'message' => 'Status atualizado com sucesso.']);
     }    
     
+    public function update(Request $request, $id)
+    {
+        $request->merge([
+            'ativo' => $request->has('ativo'),
+            'exibir_franqueado' => $request->has('exibir_franqueado'),
+        ]);
+
+        // Validação dos campos
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'chamada_curta' => 'nullable|string|max:255',
+            'conteudo' => 'required|string',
+            'imagem_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'link_video' => 'nullable|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'galeria.*' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'ativo' => 'boolean',
+            'exibir_franqueado' => 'boolean'
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        // Verificação de mídia obrigatória
+        if (!$this->hasValidMedia($request, $post)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('toastr', [
+                    'type' => 'error',
+                    'message' => 'É necessário informar uma Imagem Principal ou um Link de Vídeo',
+                    'title' => 'Erro de validação'
+                ]);
+        }
+
+        // Processar remoções primeiro
+        $this->processRemovals($request, $post);
+
+        // Atualizar dados básicos
+        $this->updatePostData($post, $validated, $request);
+
+        // Processar uploads de novas imagens
+        $dirBase = 'posts/' . $post->id;
+        $this->processImageUploads($request, $post, $dirBase);
+
+        // Processar galeria
+        $this->processGallery($request, $post, $dirBase);
+
+        return redirect()->route('posts.index')
+            ->with('toastr', [
+                'type' => 'success',
+                'message' => 'Post atualizado com sucesso!',
+                'title' => 'Sucesso'
+            ]);
+    }
+
+    // Métodos auxiliares:
+
+    protected function hasValidMedia($request, $post)
+    {
+        return $request->hasFile('imagem_principal') || 
+            !empty($request->link_video) || 
+            !empty($post->imagem_principal) || 
+            !empty($post->link_video);
+    }
+
+    protected function processRemovals($request, $post)
+    {
+        // Remover imagem principal se solicitado
+        if ($this->shouldRemove($request, 'remover_imagem_principal') && $post->imagem_principal) {
+            try {
+                Storage::disk('public')->delete($post->imagem_principal);
+            } catch (\Exception $e) {
+                Log::error("Erro ao remover imagem principal: " . $e->getMessage());
+            }
+            $post->imagem_principal = null;
+        }
+
+        // Remover thumbnail se solicitado
+        if ($this->shouldRemove($request, 'remover_thumbnail') && $post->thumbnail) {
+            try {
+                Storage::disk('public')->delete($post->thumbnail);
+            } catch (\Exception $e) {
+                Log::error("Erro ao remover thumbnail: " . $e->getMessage());
+            }
+            $post->thumbnail = null;
+        }
+    }
+
+    protected function shouldRemove($request, $field)
+    {
+        $value = $request->input($field);
+        return $value === "1" || $value === 1 || $value === true;
+    }
+
+    protected function updatePostData($post, $validated, $request)
+    {
+        $post->titulo = $validated['titulo'];
+        $post->chamada_curta = $validated['chamada_curta'] ?? null;
+        $post->conteudo = $validated['conteudo'];
+        $post->link_video = $validated['link_video'] ?? $post->link_video;
+        $post->ativo = $request->has('ativo') ? 1 : 0;
+        $post->exibir_franqueado = $request->has('exibir_franqueado') ? 1 : 0;
+        $post->slug = Str::slug($validated['titulo']);
+        $post->save();
+    }
+
+    protected function processImageUploads($request, $post, $dirBase)
+    {
+        // Processar imagem principal
+        if ($request->hasFile('imagem_principal')) {
+            $this->updateImage(
+                $request->file('imagem_principal'), 
+                $post, 
+                'imagem_principal', 
+                $dirBase
+            );
+        }
+
+        // Processar thumbnail
+        if ($request->hasFile('thumbnail')) {
+            $this->updateImage(
+                $request->file('thumbnail'), 
+                $post, 
+                'thumbnail', 
+                $dirBase,
+                'thumbnail'
+            );
+        }
+    }
+
+    protected function updateImage($file, $post, $field, $dirBase, $prefix = '')
+    {
+        // Remove existing file
+        if ($post->$field) {
+            try {
+                Storage::disk('public')->delete($post->$field);
+            } catch (\Exception $e) {
+                Log::error("Erro ao remover {$field}: " . $e->getMessage());
+            }
+        }
+
+        // Generate new filename
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $filename = $originalName . '_' . ($prefix ? $prefix . '_' : '') . Str::random(10) . '.' . $extension;
+        
+        // Store and update
+        $path = $file->storeAs($dirBase, $filename, 'public');
+        $post->$field = $path;
+        $post->save();
+    }
+
+    protected function processGallery($request, $post, $dirBase)
+    {
+        // Remover imagens da galeria que não estão mais na lista
+        if ($request->has('imagens_existentes')) {
+            $imagensManter = $request->input('imagens_existentes', []);
+            
+            // Busca todas as imagens atuais do post
+            $imagensAtuais = Imagem::where('post_id', $post->id)->get();
+            
+            foreach ($imagensAtuais as $imagem) {
+                // Se a imagem não está na lista de imagens para manter, remove
+                if (!in_array($imagem->id, $imagensManter)) {
+                    try {
+                        // Remove arquivos físicos
+                        if ($imagem->caminho) {
+                            Storage::disk('public')->delete($imagem->caminho);
+                        }
+                        if ($imagem->thumbnail) {
+                            Storage::disk('public')->delete($imagem->thumbnail);
+                        }
+                        // Remove do banco
+                        $imagem->delete();
+                    } catch (\Exception $e) {
+                        Log::error("Erro ao remover imagem da galeria ID {$imagem->id}: " . $e->getMessage());
+                    }
+                }
+            }
+        }
+
+        // Adicionar novas imagens à galeria (código existente)
+        if ($request->hasFile('galeria')) {
+            foreach ($request->file('galeria') as $index => $file) {
+                if (in_array($index, $request->input('imagens_indices', []))) {
+                    $this->addGalleryImage($file, $post, $dirBase);
+                }
+            }
+        }
+    }
+
+    protected function addGalleryImage($file, $post, $dirBase)
+    {
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $random = Str::random(10);
+        $extension = $file->getClientOriginalExtension();
+        
+        $filename = "{$originalName}_{$random}.{$extension}";
+        $thumbnailFilename = "{$originalName}_thumb_{$random}.{$extension}";
+        
+        // Store main image
+        $path = $file->storeAs("{$dirBase}/galeria", $filename, 'public');
+        
+        // Create thumbnail
+        $thumbnailPath = $this->createThumbnail($file, "{$dirBase}/galeria/thumbs", $thumbnailFilename);
+        
+        // Save to database
+        Imagem::create([
+            'post_id' => $post->id,
+            'caminho' => $path,
+            'nome_arquivo' => $filename,
+            'thumbnail' => $thumbnailPath
+        ]);
+    }    
+
     
 }        

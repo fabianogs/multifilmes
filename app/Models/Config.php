@@ -26,8 +26,6 @@ class Config extends Model
         'maps',
         'form_email_to',
         'form_email_cc',
-        'arquivo_lgpd',
-        'texto_lgpd',
 		'form_email_to',
 		'email_port',
 		'email_username',

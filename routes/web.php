@@ -14,9 +14,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/banners', [App\Http\Controllers\BannerController::class, 'index'])->name('banners.index');
     Route::get('/banners/create', [App\Http\Controllers\BannerController::class, 'create'])->name('banners.create');
@@ -75,6 +75,26 @@ Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     Route::delete('/posts/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/set_ativo/{id}', [App\Http\Controllers\PostController::class, 'set_ativo'])->name('posts.set_ativo');
     Route::post('posts/upload', [PostController::class, 'upload'])->name('posts.upload');
+
+    Route::get('/config', [App\Http\Controllers\ConfigController::class, 'edit'])->name('config');
+    Route::put('/config/update/{id}', [App\Http\Controllers\ConfigController::class, 'update'])->name('config.update');    
+
+    Route::get('/seo', [App\Http\Controllers\SeoController::class,'index'])->name('seo.index');
+    Route::get('seo/create', [App\Http\Controllers\SeoController::class, 'create'])->name('seo.create');
+    Route::post('seo/store', [App\Http\Controllers\SeoController::class, 'store'])->name('seo.store');
+    Route::get('seo/edit/{id}', [App\Http\Controllers\SeoController::class, 'edit'])->name('seo.edit');
+    Route::put('seo/update/{id}', [App\Http\Controllers\SeoController::class, 'update'])->name('seo.update');
+    Route::delete('seo/delete/{id}', [App\Http\Controllers\SeoController::class, 'destroy'])->name('seo.destroy');
+    Route::post('/admin/seos/update-exibir', [App\Http\Controllers\SeoController::class, 'updateExibir'])->name('seo.updateExibir');
+
+    Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index');
+    Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
+    Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
+    Route::get('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('usuarios.show');
+    Route::get('/usuarios/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy');
+
 });
 
 require __DIR__.'/auth.php';

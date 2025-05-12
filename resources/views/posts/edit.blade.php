@@ -51,11 +51,13 @@
                                         <div class="preview-box mb-3" id="imagem-principal-atual">
                                             <img src="{{ asset('storage/' . $post->imagem_principal) }}" class="preview-principal-image" alt="Imagem Principal">
                                             <div class="preview-dimensions">Imagem atual</div>
+                                            <div class="text-right mt-2">
+                                                <button type="button" class="btn btn-sm btn-danger" id="btn-remover-imagem-principal">
+                                                    <i class="fas fa-trash"></i> Remover imagem
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="custom-control custom-checkbox mb-2">
-                                            <input type="checkbox" class="custom-control-input" id="remover_imagem_principal" name="remover_imagem_principal">
-                                            <label class="custom-control-label" for="remover_imagem_principal">Remover imagem atual</label>
-                                        </div>
+                                        <input type="hidden" id="remover_imagem_principal" name="remover_imagem_principal" value="0">
                                     @endif
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input @error('imagem_principal') is-invalid @enderror" id="imagem_principal" name="imagem_principal" accept="image/*">
@@ -83,11 +85,13 @@
                                 <div class="preview-box mb-3" id="thumbnail-atual">
                                     <img src="{{ asset('storage/' . $post->thumbnail) }}" class="preview-thumbnail-image" alt="Thumbnail">
                                     <div class="preview-dimensions">Thumbnail atual</div>
+                                    <div class="text-right mt-2">
+                                        <button type="button" class="btn btn-sm btn-danger" id="btn-remover-thumbnail">
+                                            <i class="fas fa-trash"></i> Remover thumbnail
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="remover_thumbnail" name="remover_thumbnail">
-                                    <label class="custom-control-label" for="remover_thumbnail">Remover thumbnail atual</label>
-                                </div>
+                                <input type="hidden" id="remover_thumbnail" name="remover_thumbnail" value="0">
                             @endif
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input @error('thumbnail') is-invalid @enderror" id="thumbnail" name="thumbnail" accept="image/*">
@@ -225,6 +229,7 @@
             // Array para armazenar IDs de imagens a serem removidas
             let imagensParaRemover = [];
             
+            // Inicializar editor de texto rico
             $('#conteudo').summernote({
                 height: 300,
                 lang: 'pt-BR',
@@ -246,6 +251,7 @@
                 }
             });
 
+            // Função para upload de imagens no editor
             function uploadImage(file, editor) {
                 let formData = new FormData();
                 formData.append('file', file);
@@ -264,6 +270,7 @@
                     },
                     error: function(data) {
                         console.error('Erro ao fazer upload da imagem:', data);
+                        toastr.error('Falha ao fazer upload da imagem', 'Erro');
                     }
                 });
             }
@@ -273,7 +280,7 @@
                 input.addEventListener('change', function(e) {
                     var fileName = '';
                     if (this.files && this.files.length > 1) {
-                        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+                        fileName = (this.getAttribute('data-multiple-caption') || '{0} arquivos selecionados').replace('{0}', this.files.length);
                     } else if (this.files && this.files.length === 1) {
                         fileName = e.target.files[0].name;
                     }
@@ -368,10 +375,14 @@
                 const imagemPrincipal = $('#imagem_principal').val();
                 const linkVideo = $('#link_video').val();
                 const temImagemPrincipalOriginal = {{ $post->imagem_principal ? 'true' : 'false' }};
-                const removerImagemPrincipal = $('#remover_imagem_principal').is(':checked');
+                const removerImagemPrincipal = $('#remover_imagem_principal').val() === '1';
                 
-                if ((!imagemPrincipal && !linkVideo && !temImagemPrincipalOriginal) || 
-                    (temImagemPrincipalOriginal && removerImagemPrincipal && !imagemPrincipal && !linkVideo)) {
+                // Verifica se:
+                // - Não há nova imagem principal selecionada
+                // - Não há link de vídeo
+                // - E a imagem original foi removida ou não existia
+                if ((!imagemPrincipal && !linkVideo) && 
+                    (removerImagemPrincipal || !temImagemPrincipalOriginal)) {
                     e.preventDefault();
                     toastr.error('É necessário informar uma Imagem Principal ou um Link de Vídeo', 'Erro de validação', {
                         timeOut: 3000,
@@ -393,36 +404,56 @@
                 });
             @endif
             
-            // Mostrar/esconder elementos baseado em checkboxes
-            $('#remover_imagem_principal').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#imagem-principal-atual').addClass('text-muted opacity-50');
-                } else {
-                    $('#imagem-principal-atual').removeClass('text-muted opacity-50');
+            // Botões para remover imagens existentes
+            $('#btn-remover-imagem-principal').on('click', function() {
+                $('#remover_imagem_principal').val('1');
+                // Remover completamente o preview da imagem principal
+                $('#imagem-principal-atual').remove();
+                // Limpar o input de arquivo
+                $('#imagem_principal').val('');
+                $('label[for="imagem_principal"]').text('Escolher arquivo');
+                $('#preview-imagem-principal').empty();
+                
+                // Verificar se há link de vídeo para alertar caso necessário
+                if (!$('#link_video').val()) {
+                    toastr.warning('Lembre-se que você precisará informar um Link de Vídeo antes de salvar', 'Atenção', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
                 }
             });
-            
-            $('#remover_thumbnail').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#thumbnail-atual').addClass('text-muted opacity-50');
-                } else {
-                    $('#thumbnail-atual').removeClass('text-muted opacity-50');
-                }
+
+            // Não precisamos mais do botão de restaurar, pois o preview foi removido
+
+            $('#btn-remover-thumbnail').on('click', function() {
+                $('#remover_thumbnail').val('1');
+                // Remover completamente o preview do thumbnail
+                $('#thumbnail-atual').remove();
+                // Limpar o input de arquivo
+                $('#thumbnail').val('');
+                $('label[for="thumbnail"]').text('Escolher arquivo');
+                $('#preview-thumbnail').empty();
             });
+
+// Remova também os event listeners para os botões de restaurar, já que não vamos mais usá-los
             
-            // Se uma nova imagem principal for selecionada, esconder o checkbox de remover
+            // Se uma nova imagem principal for selecionada, desativar remover e esconder imagem atual
             $('#imagem_principal').on('change', function() {
                 if (this.files && this.files.length > 0) {
-                    $('#remover_imagem_principal').prop('checked', false).closest('.custom-control').hide();
-                    $('#imagem-principal-atual').hide();
+                    // Nova imagem substituirá a atual, então vamos esconder a atual
+                    $('#remover_imagem_principal').val('0');
+                    $('#imagem-principal-atual').addClass('text-muted opacity-50');
+                    $('#btn-remover-imagem-principal, #btn-restaurar-imagem-principal').hide();
                 }
             });
             
-            // Se uma nova thumbnail for selecionada, esconder o checkbox de remover
+            // Se uma nova thumbnail for selecionada, desativar remover e esconder thumbnail atual
             $('#thumbnail').on('change', function() {
                 if (this.files && this.files.length > 0) {
-                    $('#remover_thumbnail').prop('checked', false).closest('.custom-control').hide();
-                    $('#thumbnail-atual').hide();
+                    // Nova thumbnail substituirá a atual, então vamos esconder a atual
+                    $('#remover_thumbnail').val('0');
+                    $('#thumbnail-atual').addClass('text-muted opacity-50');
+                    $('#btn-remover-thumbnail, #btn-restaurar-thumbnail').hide();
                 }
             });
         });

@@ -301,19 +301,8 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
-        ],
-
-        // Sidebar items:
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
         ],
         [
             'text' => 'Banners',
@@ -360,24 +349,12 @@ return [
                 ],
                 [
                     'text' => 'SEO',
-                    'url' => 'area_restrita/SEO',
+                    'url' => 'area_restrita/seo',
                 ],                
                 [
-                    'text' => 'Meu perfil',
-                    'url' => '#',
+                    'text' => 'Usuários',
+                    'url' => 'area_restrita/usuarios',
                     'icon' => 'fas fa-fw fa-user',
-                    'submenu' => [
-                        [
-                            'text' => 'Perfil',
-                            'url' => 'admin/settings',
-                            'icon' => 'fas fa-fw fa-user',
-                        ],
-                        [
-                            'text' => 'Mudar senha',
-                            'url' => 'admin/settings',
-                            'icon' => 'fas fa-fw fa-lock',
-                        ],
-                    ],
                 ],
             ],
         ],
