@@ -19,7 +19,7 @@
                         <tbody>
                             @foreach($categorias as $categoria)
                                 <tr class="clickable-row" data-id="{{ $categoria->id }}">
-                                    <td>{{ $categoria->titulo }}</td>
+                                    <td>{{ $categoria->nome }}</td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('categorias.edit', $categoria) }}" class="btn btn-primary btn-sm" title="Editar">

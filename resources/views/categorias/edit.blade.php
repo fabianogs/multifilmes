@@ -16,9 +16,9 @@
                     @method('PUT')
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="nome">Título</label>
-                            <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="nome" name="nome" value="{{ old('titulo', $categoria->titulo) }}" required>
-                            @error('titulo')
+                            <label for="nome">Nome</label>
+                            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome', $categoria->titulo) }}" required>
+                            @error('nome')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

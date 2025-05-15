@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
+            $table->string('nome');
             $table->text('descricao')->nullable();
             $table->string('slug')->unique();
-            $table->foreignId('solucao_id')->constrained('solucoes')->onDelete('cascade');
+            $table->foreignId('solucao_id')->nullable()->constrained('solucoes')->onDelete('cascade');
             $table->timestamps();
         });
     }

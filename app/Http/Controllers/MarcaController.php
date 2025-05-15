@@ -15,7 +15,7 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        $marcas = Marca::with('categoria')->get();
+        $marcas = Marca::all();
         return view('marcas.index', compact('marcas'));
     }
 
@@ -24,8 +24,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::all();
-        return view('marcas.create', compact('categorias'));
+        return view('marcas.create');
     }
 
     /**
@@ -36,7 +35,6 @@ class MarcaController extends Controller
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'categoria_id' => 'required|exists:categorias,id'
         ]);
 
         $validated['slug'] = Str::slug($request->nome);
@@ -68,21 +66,21 @@ class MarcaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Marca $marca)
+    public function edit($id)
     {
-        $categorias = Categoria::all();
-        return view('marcas.edit', compact('marca', 'categorias'));
+        $marca = Marca::findOrFail($id);
+        return view('marcas.edit', compact('marca'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Marca $marca)
+    public function update(Request $request, $id)
     {
+        $marca = Marca::findOrFail($id);
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'categoria_id' => 'required|exists:categorias,id'
         ]);
 
         $validated['slug'] = Str::slug($request->nome);
@@ -111,7 +109,7 @@ class MarcaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Marca $marca)
+    public function destroy($id)
     {
         if ($marca->imagem && Storage::exists('public/' . $marca->imagem)) {
             Storage::delete('public/' . $marca->imagem);

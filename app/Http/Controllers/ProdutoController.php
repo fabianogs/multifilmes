@@ -86,7 +86,8 @@ class ProdutoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'marca_id' => 'required|exists:marcas,id',
+            'marca_id' => 'nullable|exists:marcas,id',
+            'categoria_id' => 'nullable|exists:categorias,id',
             'ativo' => 'boolean'
         ]);
 

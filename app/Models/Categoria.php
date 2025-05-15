@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Categoria extends Model
 {
     protected $fillable = [
-        'titulo',
+        'nome',
         'descricao',
         'slug',
         'solucao_id'
@@ -18,11 +18,6 @@ class Categoria extends Model
     public function solucao(): BelongsTo
     {
         return $this->belongsTo(Solucao::class);
-    }
-
-    public function marcas(): HasMany
-    {
-        return $this->hasMany(Marca::class);
     }
 
     public function produtos(): HasMany

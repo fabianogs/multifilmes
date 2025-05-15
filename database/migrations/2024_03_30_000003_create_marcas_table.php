@@ -13,7 +13,6 @@ return new class extends Migration
             $table->string('nome');
             $table->string('imagem')->nullable();
             $table->string('slug')->unique();
-            $table->foreignId('categoria_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

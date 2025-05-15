@@ -13,11 +13,17 @@ class Produto extends Model
         'imagem',
         'slug',
         'ativo',
-        'marca_id'
+        'marca_id',
+        'categoria_id'
     ];
 
     public function marca(): BelongsTo
     {
         return $this->belongsTo(Marca::class);
+    }
+
+    public function categoria(): BelongsTo
+    {
+        return $this->belongsTo(Categoria::class);
     }
 }

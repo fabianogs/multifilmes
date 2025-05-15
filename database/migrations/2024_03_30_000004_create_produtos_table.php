@@ -15,10 +15,17 @@ return new class extends Migration
             $table->string('imagem')->nullable();
             $table->string('slug')->unique();
             $table->boolean('ativo')->default(true);
-            $table->foreignId('marca_id')->constrained()->onDelete('cascade');
+
+            // marca_id opcional
+            $table->foreignId('marca_id')->nullable()->constrained()->onDelete('set null');
+
+            // categoria_id opcional
+            $table->foreignId('categoria_id')->nullable()->constrained('categorias')->onDelete('set null');
+
             $table->timestamps();
         });
     }
+
 
     public function down(): void
     {

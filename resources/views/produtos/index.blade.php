@@ -13,6 +13,7 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
+                                <th>Categoria</th>
                                 <th>Marca</th>
                                 <th>Imagem</th>
                                 <th>Status</th>
@@ -23,6 +24,7 @@
                             @foreach($produtos as $produto)
                                 <tr class="clickable-row" data-id="{{ $produto->id }}">
                                     <td>{{ $produto->nome }}</td>
+                                    <td>{{ $produto->categoria->nome }}</td>
                                     <td>{{ $produto->marca->nome }}</td>
                                     <td>
                                         @if($produto->imagem)

@@ -15,9 +15,9 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="titulo">Título</label>
-                            <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo" value="{{ old('titulo') }}" required>
-                            @error('titulo')
+                            <label for="nome">Nome</label>
+                            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome') }}" required>
+                            @error('nome')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

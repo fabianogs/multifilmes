@@ -13,7 +13,6 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Categoria</th>
                                 <th>Imagem</th>
                                 <th width="15%">Ações</th>
                             </tr>
@@ -22,7 +21,6 @@
                             @foreach($marcas as $marca)
                                 <tr class="clickable-row" data-id="{{ $marca->id }}">
                                     <td>{{ $marca->nome }}</td>
-                                    <td>{{ $marca->categoria->titulo }}</td>
                                     <td>
                                         @if($marca->imagem)
                                             <img src="{{ asset('storage/' . $marca->imagem) }}" alt="{{ $marca->nome }}" style="max-height: 50px;">

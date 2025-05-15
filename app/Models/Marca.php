@@ -11,14 +11,8 @@ class Marca extends Model
     protected $fillable = [
         'nome',
         'imagem',
-        'slug',
-        'categoria_id'
+        'slug'
     ];
-
-    public function categoria(): BelongsTo
-    {
-        return $this->belongsTo(Categoria::class);
-    }
 
     public function produtos(): HasMany
     {
