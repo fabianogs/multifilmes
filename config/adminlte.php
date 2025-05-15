@@ -1,5 +1,7 @@
 <?php
 
+use function Laravel\Prompts\text;
+
 return [
 
     /*
@@ -113,8 +115,8 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => 'img/icone.png',
+            'alt' => 'Multifilmes',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -303,6 +305,11 @@ return [
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
+        ],
+        [
+            'text' => 'Dashboard',
+            'url' => 'area_restrita/dashboard',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
         ],
         [
             'text' => 'Banners',

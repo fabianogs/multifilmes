@@ -1,37 +1,56 @@
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dashboard</h1>
-@stop
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <a href="#" class="small-box-footer">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{$marcas}}</h3>
+                            <p>Marcas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-6">
+                <a href="#">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{$categorias}}</h3>
+                            <p>Categorias</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-fw fa-medal"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-6">
+                <a href="#">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{$produtos}}</h3>
+                            <p>Produtos</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-fw fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 
-@section('content')
-    <p>Welcome to this beautiful admin panel.</p>
 @stop
 
 @section('css')
     {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@stop
-
-@section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <link rel="stylesheet" href={{ asset('css/admin_custom.css') }}
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
 @stop

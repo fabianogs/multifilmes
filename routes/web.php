@@ -9,14 +9,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/dashboard', [App\Http\Controllers\ViewController::class, 'index'])->name('dashboard');
+
 
     Route::get('/banners', [App\Http\Controllers\BannerController::class, 'index'])->name('banners.index');
     Route::get('/banners/create', [App\Http\Controllers\BannerController::class, 'create'])->name('banners.create');
