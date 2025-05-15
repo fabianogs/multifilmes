@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,
             MarcaSeeder::class,
             ProdutoSeeder::class,
+            UnidadeSeeder::class,
         ]);
     }
 }

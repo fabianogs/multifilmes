@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nome');
-            $table->string('uf');
-            $table->string('cidade');
-            $table->string('url');
+            $table->string('uf')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('url')->nullable();
         });
     }
 
