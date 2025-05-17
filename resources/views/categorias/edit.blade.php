@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="nome">Nome</label>
-                            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome', $categoria->titulo) }}" required>
+                            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome', $categoria->nome) }}" required>
                             @error('nome')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -25,11 +25,33 @@
 
                         <div class="form-group">
                             <label for="descricao">Descrição</label>
-                            <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3" required>{{ old('descricao', $categoria->descricao) }}</textarea>
+                            <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3" >{{ old('descricao', $categoria->descricao) }}</textarea>
                             @error('descricao')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Soluções</label>
+                            <div class="form-check">
+                                @foreach($solucoes as $solucao)
+                                    <div class="mb-1">
+                                        <input class="form-check-input" type="checkbox" 
+                                            name="solucoes[]" 
+                                            value="{{ $solucao->id }}"
+                                            id="solucao_{{ $solucao->id }}"
+                                            {{ in_array($solucao->id, old('solucoes', $categoria->solucoes->pluck('id')->toArray())) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="solucao_{{ $solucao->id }}">
+                                            {{ $solucao->titulo }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @error('solucoes')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Salvar</button>

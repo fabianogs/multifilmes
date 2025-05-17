@@ -20,11 +20,18 @@ class ViewController extends Controller
         $categorias = Categoria::all()->count();
         $solucoes = Solucao::all()->count();
         $unidades = Unidade::all()->count();
+        $solucoes = Solucao::all()->count();
         return view('dashboard', compact('marcas', 
         'produtos', 
         'categorias', 
         'solucoes',
         'unidades',
+        'solucoes'
     ));
+    }
+
+    public function home(){
+        $solucoes = Solucao::all();
+        return view('site.home', compact('solucoes'));
     }
 }

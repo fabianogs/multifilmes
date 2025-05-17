@@ -10,14 +10,12 @@ use Illuminate\Support\Str;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::with('solucoes')->get();
         return view('categorias.index', compact('categorias'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -28,20 +26,24 @@ class CategoriaController extends Controller
         return view('categorias.create', compact('solucoes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'descricao' => 'required|string',
+            'descricao' => 'nullable|string',
+            'solucoes' => 'nullable|array',
+            'solucoes.*' => 'exists:solucoes,id',
         ]);
 
-        $data = $request->all();
-        $data['slug'] = Str::slug($request->titulo);
+        $data = $request->only(['nome', 'descricao']);
+        $data['slug'] = Str::slug($request->nome);
 
         $categoria = Categoria::create($data);
+
+        // Associa as soluções (muitos-para-muitos)
+        if ($request->has('solucoes')) {
+            $categoria->solucoes()->sync($request->solucoes);
+        }
 
         return redirect()->route('categorias.index')
             ->with('toastr', [
@@ -51,36 +53,29 @@ class CategoriaController extends Controller
             ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Categoria $categoria)
-    {
-        return view('categorias.show', compact('categoria'));
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Categoria $categoria)
     {
-        return view('categorias.edit', compact('categoria'));
+        $solucoes = Solucao::all();
+        return view('categorias.edit', compact('categoria', 'solucoes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Categoria $categoria)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'descricao' => 'required|string',
+            'descricao' => 'nullable|string',
+            'solucoes' => 'array', // pode ser vazio (nenhuma marcada)
+            'solucoes.*' => 'exists:solucoes,id',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['nome', 'descricao']);
         $data['slug'] = Str::slug($request->nome);
 
         $categoria->update($data);
+
+        // Atualiza os relacionamentos many-to-many
+        $categoria->solucoes()->sync($request->input('solucoes', [])); // se nada for enviado, remove todos
 
         return redirect()->route('categorias.index')
             ->with('toastr', [
@@ -90,9 +85,7 @@ class CategoriaController extends Controller
             ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Categoria $categoria)
     {
         if ($categoria->imagem) {

@@ -12,7 +12,8 @@
                     <table class="table table-hover table-sm" id="categoriasTable">
                         <thead>
                             <tr>
-                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Solução</th>
                                 <th width="15%">Ações</th>
                             </tr>
                         </thead>
@@ -20,6 +21,13 @@
                             @foreach($categorias as $categoria)
                                 <tr class="clickable-row" data-id="{{ $categoria->id }}">
                                     <td>{{ $categoria->nome }}</td>
+                                    <td>
+                                        @if($categoria->solucoes->isNotEmpty())
+                                            {{ $categoria->solucoes->pluck('titulo')->implode(', ') }}
+                                        @else
+                                            <em>Sem solução</em>
+                                        @endif
+                                    </td>
                                     <td class="text-right">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('categorias.edit', $categoria) }}" class="btn btn-primary btn-sm" title="Editar">

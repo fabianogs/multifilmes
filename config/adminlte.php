@@ -357,6 +357,7 @@ return [
                 [
                     'text' => 'SEO',
                     'url' => 'area_restrita/seo',
+                    'icon' => 'fas fa-fw fa-sitemap',
                 ],                
                 [
                     'text' => 'Usuários',

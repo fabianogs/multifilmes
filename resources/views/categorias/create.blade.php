@@ -35,17 +35,27 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="solucao_id">Solução</label>
-                            <select class="form-control @error('solucao_id') is-invalid @enderror" id="solucao_id" name="solucao_id" required>
-                                <option value="">Selecione uma solução</option>
+                            <label>Soluções</label>
+                            <div class="row">
                                 @foreach($solucoes as $solucao)
-                                    <option value="{{ $solucao->id }}" {{ old('solucao_id') == $solucao->id ? 'selected' : '' }}>
-                                        {{ $solucao->titulo }}
-                                    </option>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox" 
+                                                name="solucoes[]" 
+                                                value="{{ $solucao->id }}" 
+                                                id="solucao_{{ $solucao->id }}"
+                                                {{ is_array(old('solucoes')) && in_array($solucao->id, old('solucoes')) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="solucao_{{ $solucao->id }}">
+                                                {{ $solucao->titulo }}
+                                            </label>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </select>
-                            @error('solucao_id')
-                                <span class="invalid-feedback" role="alert">
+                            </div>
+                            @error('solucoes')
+                                <span class="text-danger" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
