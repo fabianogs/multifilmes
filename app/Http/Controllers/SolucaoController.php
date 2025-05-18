@@ -58,14 +58,6 @@ class SolucaoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Solucao $solucao)
-    {
-        return view('solucoes.show', compact('solucao'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
@@ -77,8 +69,9 @@ class SolucaoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Solucao $solucao)
+    public function update(Request $request, $id)
     {
+        $solucao = Solucao::find($id);
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
@@ -98,8 +91,9 @@ class SolucaoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Solucao $solucao)
+    public function destroy($id)
     {
+        $solucao = Solucao::find($id);
         $solucao->delete();
         return response()->json([
             'success' => true,

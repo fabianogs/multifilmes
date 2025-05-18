@@ -6,6 +6,11 @@ use App\Http\Controllers\UnidadeController;
 use App\Http\Controllers\PostController;
 
 Route::get('/', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
+Route::get('/quem-somos', function () {
+    return view('site.quem-somos');
+}
+)->name('site.quem-somos');
+
 
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

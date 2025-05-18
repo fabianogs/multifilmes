@@ -23,60 +23,48 @@
                             controle solar, segurança, estilo em decoração, personalizações de automóveis e imóveis. Seja no
                             seu imóvel ou no seu automóvel, sempre prestaremos o melhor serviço de acordo com sua demanda.
                         </p>
-                        <div class="d-flex mg-top-30"><a href="quem-somos" class="btn">saiba mais</a></div>
+                        <div class="d-flex mg-top-30"><a href="{{ route('site.quem-somos') }}" class="btn">saiba mais</a></div>
                     </article>
                 </div>
             </div>
         </section>
-        <section class="section">
-            <div class="row">
-                @foreach ($solucoes as $solucao )
+        @foreach ($solucoes as $solucao)
+            <section class="section">
+                <div class="row">
                     <div class="col md-up-offset-1 md-up-10">
                         <div class="block">
-                            <h3 class="block-title">Soluções <strong>{{ $solucao->titulo }}</strong></h3>
-                            <p class="block-text">{{ $solucao->descricao }}</p>
+                            <h3 class="block-title">Soluções
+                                <strong>{{ $solucao->titulo }}</strong>
+                            </h3>
+                            <p class="block-text">
+                                {{ $solucao->descricao }}
+                            </p>
                         </div>
-                    </div>                        
-                @endforeach
-                <div class="col md-up-offset-1 md-up-10">
-                    <div class="block">
-                        <h3 class="block-title">Soluções <strong>AUTOMOTIVAS</strong></h3>
-                        <p class="block-text">A Multifilmes nasceu em 1999, especializada em aplicação de películas de alta
-                            performance para vidros.<br>Estamos presentes no Brasil e Estados Unidos, com operações nos dois
-                            países.</p>
+                    </div>
+
+                    <div class="col md-up-offset-1 md-up-10 pd-horizontal-0">
+                        <div class="d-flex fw-wrap">
+                            @foreach ($solucao->categorias->chunk(4) as $linha)
+                                <div class="row w-100">
+                                    @foreach ($linha as $categoria)
+                                        <div class="col md-up-3 sm-6">
+                                            <a href="#" class="box">
+                                                <div class="box-icon">
+                                                    <img src="img/icons/car.png" alt="">
+                                                </div>
+                                                <h4 class="box-title">{{ $categoria->nome }}</h4>
+                                                <p class="box-text">{{ $categoria->descricao }}</p>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-                <div class="col md-up-offset-1 md-up-10 pd-horizontal-0">
-                    <div class="d-flex fw-wrap"> <?php for ($i = 1; $i <= 4; $i++) { ?>
-                            <div class="col md-up-3 sm-6"><a href="solucoes" class="box">
-                                    <div class="box-icon"><img src="img/icons/car.png" alt=""></div>
-                                    <h4 class="box-title">Películas de Controle Solar</h4>
-                                    <p class="box-text">Estilo e segurança unidos em um só produto</p>
-                                </a></div> <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="row">
-                <div class="col md-up-offset-1 md-up-10">
-                    <div class="block">
-                        <h3 class="block-title">Soluções <strong>RESIDENCIAIS E CORPORATIVAS</strong></h3>
-                        <p class="block-text">Seja para proteção solar, privacidade, antivandalismo ou estética, a
-                            Multifilmes oferece sempre a melhor opção.</p>
-                    </div>
-                </div>
-                <div class="col md-up-offset-1 md-up-10 pd-horizontal-0">
-                    <div class="d-flex fw-wrap"> <?php for ($i = 1; $i <= 4; $i++) { ?>
-                            <div class="col md-up-3 sm-6"><a href="solucoes" class="box">
-                                    <div class="box-icon"><img src="img/icons/car.png" alt=""></div>
-                                    <h4 class="box-title">Películas de Controle Solar</h4>
-                                    <p class="box-text">Estilo e segurança unidos em um só produto</p>
-                                </a></div> <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </section><a name="unidades"></a>
+            </section>
+        @endforeach
+        <a name="unidades"></a>
         <section class="section section-units">
             <div class="row">
                 <div class="col md-up-offset-1 md-up-10">
@@ -88,15 +76,15 @@
                                     <p>Conheça nossas unidades espalhadas pelo mundo. Selecione uma das cidades na listagem
                                         abaixo:</p>
                                 </li>
-                                <li class="d-flex mg-top-30"><select name="">
-                                        <option value="">SÃO PAULO</option>
-                                        <option value="">SÃO PAULO</option>
-                                        <option value="">SÃO PAULO</option>
-                                        <option value="">SÃO PAULO</option>
-                                        <option value="">SÃO PAULO</option>
-                                    </select> <button>OK</button></li>
+                                <li class="d-flex mg-top-30">
+                                    <select name="">
+                                        @foreach ($unidades as $unidade)
+                                            <option value="{{$unidade->id}}">{{ $unidade->cidade }}</option>
+                                        @endforeach
+                                    </select> 
+                                    <button>OK</button></li>
                             </ul>
-                        </form><img src="media/img/units.jpg" alt="">
+                        </form><img src="img/units.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -119,14 +107,19 @@
                         data-carousel-auto-height="false" data-carousel-mouse-drag="false" data-carousel-touch-drag="true"
                         data-carousel-pull-drag="true" data-carousel-auto-play-timeout="3500"
                         data-carousel-auto-play-hover-pause="true" data-carousel-thumbs="false"
-                        data-carousel-thumbs-image="false"> <?php for ($i = 1; $i <= 6; $i++) { ?> <a href="post" class="item">
-                                <div class="item-image"><img src="holder.js/180x120?auto=yes" alt=""></div>
-                                <div class="item-title">
-                                    <h4>Multifilmes vende mais de 60 unidades e fatura mais de 5 milhões</h4><span>ler
-                                        mais</span>
+                        data-carousel-thumbs-image="false"> 
+                        @foreach ($posts as $post)
+                            <a href="post" class="item">
+                                <div class="item-image">
+                                    <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="">
                                 </div>
-                            </a> <?php } ?> </div>
-                    <div class="button"><a href="blog" class="btn">mais postagem</a></div>
+                                <div class="item-title">
+                                    <h4>{{ $post->chamada_curta }}</h4><span>ler mais</span>
+                                </div>
+                            </a> 
+                        @endforeach
+                        </div>
+                    <div class="button"><a href="blog" class="btn">mais postagens</a></div>
                 </div>
             </div>
         </section>

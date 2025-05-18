@@ -7,6 +7,7 @@ use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\Solucao;
 use App\Models\Unidade;
+use App\Models\Post;
 
 
 class ViewController extends Controller
@@ -31,7 +32,12 @@ class ViewController extends Controller
     }
 
     public function home(){
-        $solucoes = Solucao::all();
-        return view('site.home', compact('solucoes'));
+        $solucoes = Solucao::with('categorias')->get();
+        $unidades = Unidade::all();
+        $posts = Post::all();
+        return view('site.home', compact('solucoes',
+        'unidades',
+                    'posts'
+                ));
     }
 }
