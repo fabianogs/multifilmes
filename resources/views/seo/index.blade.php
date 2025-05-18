@@ -5,52 +5,57 @@
 @section('plugins.Datatables', true)
 @section('plugins.Sweetalert2', true)
 
-@section('content_header')
-    <h1>Lista de scripts</h1>
-@stop
-
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <a href="{{ route('seo.create') }}" class="btn btn-primary">Cadastrar SEO</a>
-        </div>
-        <div class="card-body">
-            <table class="table table-hover table-sm" id="table1">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Ativo?</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($itens as $item)
-                        <tr>
-                            <td>{{$item->id}}</td>
-                            <td>{{$item->nome}}</td>
-                            <td>
-                                <input type="checkbox" class="exibir-checkbox" data-id="{{ $item->id }}" {{ $item->status == '1' ? 'checked' : '' }}>
-                            </td>
-                            <td width="130px">
-                                <form action="{{ route('seo.destroy', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-default text-danger mx-1 shadow delete" title="Apagar" data-id={{$item->id}}>
-                                        <i class="fa fa-lg fa-fw fa-trash"></i>
-                                    </button>
-                                    <a href="{{ route('seo.edit', $item->id) }}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
-                                        <i class="fa fa-lg fa-fw fa-pen"></i>
-                                    </a>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+<br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    Scripts para SEO
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-sm" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Ativo?</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($itens as $item)
+                                <tr>
+                                    <td>{{$item->id}}</td>
+                                    <td>{{$item->nome}}</td>
+                                    <td>
+                                        <input type="checkbox" class="exibir-checkbox" data-id="{{ $item->id }}" {{ $item->status == '1' ? 'checked' : '' }}>
+                                    </td>
+                                    <td width="130px">
+                                        <form action="{{ route('seo.destroy', $item->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-xs btn-default text-danger mx-1 shadow delete" title="Apagar" data-id={{$item->id}}>
+                                                <i class="fa fa-lg fa-fw fa-trash"></i>
+                                            </button>
+                                            <a href="{{ route('seo.edit', $item->id) }}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
+                                                <i class="fa fa-lg fa-fw fa-pen"></i>
+                                            </a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @stop
+
+@section('css')
+    <link rel="stylesheet" href={{ asset('css/admin_custom.css') }}>
+@endsection
 
 @section('js')
     <script>

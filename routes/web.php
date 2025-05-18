@@ -6,13 +6,15 @@ use App\Http\Controllers\UnidadeController;
 use App\Http\Controllers\PostController;
 
 Route::get('/', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
+Route::get('/home', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
 Route::get('/quem-somos', function () {
     return view('site.quem-somos');
 })->name('site.quem-somos');
-Route::get('/solucoes', function () {
-    return view('site.solucoes');
-})->name('site.solucoes');
-
+Route::get('/solucoes/{slug}', [App\Http\Controllers\ViewController::class, 'solucoes'])->name('site.solucoes');
+Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name('site.blog');
+Route::get('/unidades', function () {
+    return view('site.unidades');
+})->name('site.unidades');
 
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

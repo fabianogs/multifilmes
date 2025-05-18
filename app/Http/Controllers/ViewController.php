@@ -23,12 +23,14 @@ class ViewController extends Controller
         $solucoes = Solucao::all()->count();
         $unidades = Unidade::all()->count();
         $solucoes = Solucao::all()->count();
+        $posts = Post::all()->count();
         return view('dashboard', compact('marcas', 
         'produtos', 
         'categorias', 
         'solucoes',
         'unidades',
-        'solucoes'
+        'solucoes',
+        'posts'
     ));
     }
 
@@ -37,11 +39,25 @@ class ViewController extends Controller
         $unidades = Unidade::all();
         $posts = Post::all();
         $config = Config::first();
+        $qtd_posts = Post::all()->count();
 
         return view('site.home', compact('solucoes',
         'unidades',
                     'posts',
-                    'config'
+                    'config',
+                    'qtd_posts'
                 ));
+    }
+
+    public function solucoes($slug){
+
+        $solucao = Solucao::where('slug', $slug)->with('categorias')->first();
+        return view('site.solucoes', compact('solucao'));
+    }
+
+    public function blog(){
+
+        $posts = Post::all();
+        return view('site.blog', compact('posts'));
     }
 }

@@ -48,7 +48,7 @@
                                 <div class="row w-100">
                                     @foreach ($linha as $categoria)
                                         <div class="col md-up-3 sm-6">
-                                            <a href="#" class="box">
+                                            <a href="{{route('site.solucoes',$solucao->slug)}}" class="box">
                                                 <div class="box-icon">
                                                     <img src="img/icons/car.png" alt="">
                                                 </div>
@@ -73,8 +73,7 @@
                             <ul>
                                 <li>
                                     <legend>Unidades</legend>
-                                    <p>Conheça nossas unidades espalhadas pelo mundo. Selecione uma das cidades na listagem
-                                        abaixo:</p>
+                                    <p>Conheça nossas unidades espalhadas pelo mundo. Selecione uma das cidades na listagem abaixo:</p>
                                 </li>
                                 <li class="d-flex mg-top-30">
                                     <select name="">
@@ -100,13 +99,24 @@
                 </div>
                 <div class="col">
                     <div class="carousel" data-ix="carousel" data-carousel-autoplay="false" data-carousel-loop="true"
-                        data-carousel-margin="20" data-carousel-margin-991="20" data-carousel-items="3"
-                        data-carousel-items-1200="3" data-carousel-items-991="3" data-carousel-items-767="2"
-                        data-carousel-items-480="1" data-carousel-items-0="1" data-carousel-center="false"
-                        data-carousel-dots="false" data-carousel-nav="true" data-carousel-auto-width="false"
-                        data-carousel-auto-height="false" data-carousel-mouse-drag="false" data-carousel-touch-drag="true"
-                        data-carousel-pull-drag="true" data-carousel-auto-play-timeout="3500"
-                        data-carousel-auto-play-hover-pause="true" data-carousel-thumbs="false"
+                        data-carousel-margin="20" data-carousel-margin-991="20" 
+                        data-carousel-items="{{ count($posts) }}"
+                        data-carousel-items-1200="{{ count($posts) }}" 
+                        data-carousel-items-991="{{ count($posts) }}" 
+                        data-carousel-items-767="2"
+                        data-carousel-items-480="1" 
+                        data-carousel-items-0="1" 
+                        data-carousel-center="false"
+                        data-carousel-dots="false" 
+                        data-carousel-nav="true" 
+                        data-carousel-auto-width="false"
+                        data-carousel-auto-height="false" 
+                        data-carousel-mouse-drag="false" 
+                        data-carousel-touch-drag="true"
+                        data-carousel-pull-drag="true" 
+                        data-carousel-auto-play-timeout="3500"
+                        data-carousel-auto-play-hover-pause="true" 
+                        data-carousel-thumbs="false"
                         data-carousel-thumbs-image="false"> 
                         @foreach ($posts as $post)
                             <a href="post" class="item">

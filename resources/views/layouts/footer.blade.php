@@ -30,9 +30,9 @@
             <nav class="footer-menu">
                 <ul>
                     <li><a href="{{ route('site.quem-somos')}}">Sobre nós</a></li>
-                    <li><a href="{{route('site.solucoes')}}">Automotivas</a></li>
-                    <li><a href="{{route('site.solucoes')}}">Residenciais e Corporativas</a></li>
-                    <li><a href="home#unidades">Unidades</a></li>
+                    <li><a href="{{route('site.solucoes', 'automotivas')}}">Automotivas</a></li>
+                    <li><a href="{{route('site.solucoes', 'residenciais-corporativas')}}">Residenciais e Corporativas</a></li>
+                    <li><a href="{{route('site.unidades')}}">Unidades</a></li>
                     <li><a href="blog">Universo Multifilmes</a></li>
                 </ul>
             </nav>
@@ -42,8 +42,10 @@
                         <li>
                             <legend>PORTAL DO FRANQUEADO</legend>
                         </li>
-                        <li><input type="text" placeholder="Usuário"> <input type="text" placeholder="Senha"> <button
-                                class="btn"><i class="fas fa-arrow-circle-right"></i></button></li>
+                        <li><input type="text" placeholder="Usuário"> 
+                            <input type="text" placeholder="Senha"> 
+                            <button class="btn"><i class="fas fa-arrow-circle-right"></i></button>
+                        </li>
                     </ul>
                 </form>
             </div>

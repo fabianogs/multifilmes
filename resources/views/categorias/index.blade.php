@@ -8,6 +8,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-secondary">
+                <div class="card-header">
+                    Categorias
+                </div>                
                 <div class="card-body">
                     <table class="table table-hover table-sm" id="categoriasTable">
                         <thead>
