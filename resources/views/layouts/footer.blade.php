@@ -5,9 +5,22 @@
                 <div class="div"><span>MULTIFILMES WINDOW FILM LTDA</span> CNPJ: 13.499.040/0001-71</div>
                 <div class="div"><span>Central de Negócios</span> Rua Lêda Vassimon, 570 – Jd. Nova Aliança<br>Ribeirão
                     Preto - SP (16) 3234-5002</div>
-                <div class="footer-social"><a href=""><i class="fab fa-whatsapp"></i></a> <a href=""><i
-                            class="fab fa-youtube"></i></a> <a href=""><i class="fab fa-instagram"></i></a> <a
-                        href=""><i class="fab fa-facebook-f"></i></a> <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <div class="footer-social">
+                    @if(!empty($config->whatsapp))
+                        <a href="{{ $config->whatsapp}}"><i class="fab fa-whatsapp"></i></a>
+                    @endif
+                    @if(!empty($config->youtube)) 
+                        <a href="{{ $config->youtube }}"><i class="fab fa-youtube"></i></a>
+                    @endif
+                    @if(!empty($config->instagram))
+                        <a href="{{ $config->instagram}}"><i class="fab fa-instagram"></i></a>
+                    @endif
+                    @if(!empty($config->facebook))
+                        <a href="{{ $config->facebook}}"><i class="fab fa-facebook-f"></i></a>
+                    @endif
+                    @if(!empty($config->linkedin))
+                        <a href="{{ $config->linkedin}}"><i class="fab fa-linkedin-in"></i></a>
+                    @endif
                 </div>
                 <div class="footer-copy"><a href="">Política de Privacidade</a> © Copyright 2021<br>Todos s direitos
                     reservados a Multifilmes Window Film</div>
@@ -16,9 +29,9 @@
         <div class="col md-up-4 sm-6">
             <nav class="footer-menu">
                 <ul>
-                    <li><a href="quem-somos">Sobre nós</a></li>
-                    <li><a href="solucoes">Automotivas</a></li>
-                    <li><a href="solucoes">Residenciais e Corporativas</a></li>
+                    <li><a href="{{ route('site.quem-somos')}}">Sobre nós</a></li>
+                    <li><a href="{{route('site.solucoes')}}">Automotivas</a></li>
+                    <li><a href="{{route('site.solucoes')}}">Residenciais e Corporativas</a></li>
                     <li><a href="home#unidades">Unidades</a></li>
                     <li><a href="blog">Universo Multifilmes</a></li>
                 </ul>

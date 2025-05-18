@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\Solucao;
 use App\Models\Unidade;
 use App\Models\Post;
+use App\Models\Config;
 
 
 class ViewController extends Controller
@@ -35,9 +36,12 @@ class ViewController extends Controller
         $solucoes = Solucao::with('categorias')->get();
         $unidades = Unidade::all();
         $posts = Post::all();
+        $config = Config::first();
+
         return view('site.home', compact('solucoes',
         'unidades',
-                    'posts'
+                    'posts',
+                    'config'
                 ));
     }
 }

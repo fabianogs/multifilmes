@@ -8,8 +8,10 @@ use App\Http\Controllers\PostController;
 Route::get('/', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
 Route::get('/quem-somos', function () {
     return view('site.quem-somos');
-}
-)->name('site.quem-somos');
+})->name('site.quem-somos');
+Route::get('/solucoes', function () {
+    return view('site.solucoes');
+})->name('site.solucoes');
 
 
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
