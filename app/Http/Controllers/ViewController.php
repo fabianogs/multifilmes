@@ -36,7 +36,7 @@ class ViewController extends Controller
 
     public function home(){
         $solucoes = Solucao::with('categorias')->get();
-        $unidades = Unidade::all();
+        $unidades = Unidade::orderBy('cidade', 'asc')->get();
         $posts = Post::all();
         $config = Config::first();
         $qtd_posts = Post::all()->count();
@@ -59,5 +59,10 @@ class ViewController extends Controller
 
         $posts = Post::all();
         return view('site.blog', compact('posts'));
+    }
+
+    public function post($slug){
+        $post = Post::where('slug', $slug)->first();
+        return view('site.post', compact('post'));
     }
 }

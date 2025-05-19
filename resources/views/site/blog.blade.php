@@ -32,7 +32,7 @@
             <div class="row">
                 @foreach ($posts as $post)
                     <div class="col md-up-4 sm-6">
-                        <a href="post" class="item">
+                        <a href="{{ route('site.post', ['slug' => $post->slug]) }}" class="item">
                             <div class="item-image"><img src="{{ asset('storage/' . $post->thumbnail) }}" alt=""></div>
                             <div class="item-title">
                                 <h4>{{$post->chamada_curta}}</h4><span>ler mais</span>

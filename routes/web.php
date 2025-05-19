@@ -15,6 +15,8 @@ Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name(
 Route::get('/unidades', function () {
     return view('site.unidades');
 })->name('site.unidades');
+Route::get('/post/{slug}', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
+
 
 Route::middleware('auth')->prefix('area_restrita')-> group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
