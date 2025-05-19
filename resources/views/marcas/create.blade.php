@@ -24,7 +24,7 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="categoria_id">Categoria</label>
                             <select class="form-control @error('categoria_id') is-invalid @enderror" id="categoria_id" name="categoria_id" required>
                                 <option value="">Selecione uma categoria</option>
@@ -39,7 +39,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="imagem">Imagem (150x150px)</label>

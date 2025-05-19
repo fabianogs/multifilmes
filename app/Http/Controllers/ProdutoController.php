@@ -61,27 +61,21 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Produto $produto)
-    {
-        return view('produtos.show', compact('produto'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produto $produto)
+    public function edit($id)
     {
         $marcas = Marca::all();
+        $produto = Produto::findOrFail($id);
         return view('produtos.edit', compact('produto', 'marcas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produto $produto)
+    public function update(Request $request, $id)
     {
+        $produto = Produto::findOrFail($id);
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
@@ -118,8 +112,9 @@ class ProdutoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produto $produto)
+    public function destroy($id)
     {
+        $produto = Produto::findOrFail($id);
         if ($produto->imagem && Storage::exists('public/' . $produto->imagem)) {
             Storage::delete('public/' . $produto->imagem);
         }
