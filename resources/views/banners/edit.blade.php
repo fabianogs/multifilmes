@@ -3,12 +3,15 @@
 @section('title', 'Editar Banner')
 
 @section('content')
-    <br>
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                Editar banner
-            </div>
-            <div class="card-body">
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    Editar Banner
+                </div>
+                <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -65,6 +68,8 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
 @stop
 
 @section('css')

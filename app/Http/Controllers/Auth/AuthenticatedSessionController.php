@@ -44,4 +44,14 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        } else {
+            // Se for franqueado, redireciona para a página da sua unidade
+            return redirect()->route('unidades.show', $user->unidade_id);
+        }
+    }
 }

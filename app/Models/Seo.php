@@ -11,7 +11,9 @@ class Seo extends Model
     protected $table = 'seo';
     protected $fillable = ['tipo', 'script', 'status', 'nome'];
 
-    public function foo(){
-        
+    public function unidade()
+    {
+        return $this->belongsTo(Unidade::class);
     }
+
 }

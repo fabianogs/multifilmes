@@ -15,7 +15,6 @@ class ViewController extends Controller
 {
     public function index()
     {
-        //contagem de marcas
 
         $marcas = Marca::all()->count();
         $produtos = Produto::all()->count();

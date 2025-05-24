@@ -2,13 +2,15 @@
 
 @section('title', 'Editar SEO')
 
-@section('content_header')
-    <h1>Editar SEO</h1>
-@stop
-
 @section('content')
-    <div class="card">
-        <div class="card-body">
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                Editar SEO
+            </div>
+            <div class="card-body">
             <form id="form1" action={{ route('seo.update', $seo->id) }} method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -32,11 +34,11 @@
                     <label for="status">Status</label>
                     <select name="status" id="status" class="form-control">
                         @if ($seo->status == '1')
-                            <option value="1" selected>Sim</option>
-                            <option value="0">Não</option>
+                            <option value="1" selected>Ativo</option>
+                            <option value="0">Inativo</option>
                         @else
-                            <option value="1">Sim</option>
-                            <option value="0" selected>Não</option>
+                            <option value="1">Ativo</option>
+                            <option value="0" selected>Inativo</option>
                         @endif
                     </select>
                 </div>
@@ -52,3 +54,9 @@
             </form>
     </div>
 @stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+

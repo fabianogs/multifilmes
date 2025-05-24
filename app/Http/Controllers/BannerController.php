@@ -81,14 +81,15 @@ class BannerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Banner $banner)
+    public function update(Request $request, $id)
     {
+        $banner = Banner::find($id);
+
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'subtitulo' => 'string|max:255',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'link'=> 'required|string',
-            'ativo' => 'boolean'
         ]);
 
         $banner->titulo = $validated['titulo'];
@@ -120,8 +121,10 @@ class BannerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Banner $banner)
+    public function destroy($id)
     {
+        $banner = Banner::find($id);
+
         if ($banner->imagem && Storage::exists('public/' . $banner->imagem)) {
             Storage::delete('public/' . $banner->imagem);
         }

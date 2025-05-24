@@ -146,5 +146,51 @@
                 positionClass: "toast-top-right"
             });
         @endif
+
+        // Função para ativar/desativar banner
+        $('.toggle-status').on('change', function() {
+            const id = $(this).data('id');
+            const ativo = $(this).prop('checked');
+            
+            fetch(`/banners/${id}/set_ativo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ ativo: ativo })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success('Status do banner atualizado com sucesso!', 'Sucesso', {
+                        timeOut: 1000,
+                        closeButton: true,
+                        progressBar: true,
+                        positionClass: "toast-top-right"
+                    });
+                } else {
+                    toastr.error('Erro ao atualizar status do banner', 'Erro', {
+                        timeOut: 1000,
+                        closeButton: true,
+                        progressBar: true,
+                        positionClass: "toast-top-right"
+                    });
+                    // Reverte o checkbox em caso de erro
+                    $(this).prop('checked', !ativo);
+                }
+            })
+            .catch(error => {
+                toastr.error('Erro ao atualizar status do banner', 'Erro', {
+                    timeOut: 1000,
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: "toast-top-right"
+                });
+                // Reverte o checkbox em caso de erro
+                $(this).prop('checked', !ativo);
+            });
+        });
     </script>
 @stop 

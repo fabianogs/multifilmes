@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'unidade_id',
     ];
 
     /**
@@ -44,5 +47,42 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function unidade()
+    {
+        return $this->belongsTo(Unidade::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isFranqueado()
+    {
+        return $this->role === 'franqueado';
+    }
+
+    public function canAccessUnidade(Unidade $unidade)
+    {
+        return $this->isAdmin() || $this->unidade_id === $unidade->id;
+    }
+
+    public function canEditConfig(Config $config)
+    {
+        return $this->isAdmin() || 
+               ($this->isFranqueado() && $this->unidade_id === $config->unidade_id);
+    }
+
+    public function canEditSeo(Seo $seo)
+    {
+        return $this->isAdmin() || 
+               ($this->isFranqueado() && $this->unidade_id === $seo->unidade_id);
+    }
+
+    public function getUnidadePrincipal()
+    {
+        return $this->unidade;
     }
 }

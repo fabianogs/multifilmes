@@ -1,47 +1,42 @@
 @extends('adminlte::page')
 
-@section('title', 'SEOS')
-
-@section('plugins.Datatables', true)
-@section('plugins.Sweetalert2', true)
+@section('title', 'SEO')
 
 @section('content')
 <br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="card card-secondary">
                 <div class="card-header">
-                    Scripts para SEO
+                    SEO
                 </div>
                 <div class="card-body">
                     <table class="table table-hover table-sm" id="table1">
                         <thead>
                             <tr>
-                                <th>Id</th>
                                 <th>Nome</th>
-                                <th>Ativo?</th>
-                                <th>Ações</th>
+                                <th>Tipo</th>
+                                <th>Unidade</th>
+                                <th>Status</th>
+                                <th width="3%">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($itens as $item)
-                                <tr>
-                                    <td>{{$item->id}}</td>
-                                    <td>{{$item->nome}}</td>
+                            @foreach ($seos as $seo)
+                                <tr class="clickable-row" data-id="{{ $seo->id }}">
+                                    <td>{{ $seo->nome }}</td>
+                                    <td>{{ $seo->tipo }}</td>
+                                    <td>{{ $seo->unidade->cidade }}</td>
                                     <td>
-                                        <input type="checkbox" class="exibir-checkbox" data-id="{{ $item->id }}" {{ $item->status == '1' ? 'checked' : '' }}>
+                                        <span class="badge {{ $seo->status ? 'badge-success' : 'badge-danger' }}">
+                                            {{ $seo->status ? 'Ativo' : 'Inativo' }}
+                                        </span>
                                     </td>
-                                    <td width="130px">
-                                        <form action="{{ route('seo.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-xs btn-default text-danger mx-1 shadow delete" title="Apagar" data-id={{$item->id}}>
-                                                <i class="fa fa-lg fa-fw fa-trash"></i>
-                                            </button>
-                                            <a href="{{ route('seo.edit', $item->id) }}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
-                                                <i class="fa fa-lg fa-fw fa-pen"></i>
-                                            </a>
-                                        </form>
+                                    <td style="text-align: center;">
+                                        <a href="{{ route('seo.edit', $seo->id) }}" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -51,65 +46,87 @@
             </div>
         </div>
     </div>
+</div>
 @stop
 
 @section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href={{ asset('css/admin_custom.css') }}>
-@endsection
+@stop
 
 @section('js')
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        new DataTable('#table1', {
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json'
-            }});
+        $(document).ready(function() {
+            $('#table1').DataTable({
+                dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
+                     '<"row"<"col-sm-12"tr>>' +
+                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                buttons: [
+                    {
+                        text: 'Inserir',
+                        className: 'btn btn-primary',
+                        action: function (e, dt, node, config) {
+                            window.location.href = "{{ route('seo.create') }}";
+                        }
+                    }
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json'
+                },
+                pageLength: 10,
+                responsive: true
+            });
 
-        $(document).ready(function () {
-            @if (session('success'))
-                $(document).Toasts('create', {
-                    title: 'Sucesso',
-                    class: 'bg-success',
-                    autohide: true,
-                    delay: 2100,
-                    body: 'Operação realizada com sucesso.'
-                })
-            @endif
-        });
-
-        $(document).ready(function () {
-            $('.delete').click(function () {
+            $('.clickable-row').on('dblclick', function () {
                 const id = $(this).data('id');
-                const confirmation = window.confirm("Tem certeza que quer apagar?");
-                if (confirmation) {
-                    // User confirmed, submit the form for deletion
-                    $(this).closest('form').submit();
-                }
+                window.location.href = "{{ route('seo.edit', ['id' => ':id']) }}".replace(':id', id);
             });
         });
 
-        $(document).ready(function () {
-        $('.exibir-checkbox').change(function () {
+        $('.toggle-exibir').change(function() {
+            var seoId = $(this).data('id');
             var checkbox = $(this);
-            var itemId = checkbox.data('id');
-            var isChecked = checkbox.prop('checked') ? 1 : 0;
 
-            // Send AJAX request to update the database
             $.ajax({
-                type: 'POST',
-                url: '{{ route("seo.updateExibir") }}', // Update with your actual route
+                url: "{{ route('seo.update', ['id' => ':id']) }}".replace(':id', seoId),
+                method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    id: itemId,
-                    ativo: isChecked
+                    exibir: checkbox.prop('checked')
                 },
-                success: function (response) {
-                    // Handle success if needed
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Status de exibição atualizado com sucesso.');
+                    } else {
+                        toastr.error('Erro ao atualizar status de exibição.');
+                        checkbox.prop('checked', !checkbox.prop('checked'));
+                    }
                 },
-                error: function (error) {
-                    console.error('Error updating exibir status:', error);
+                error: function() {
+                    toastr.error('Erro ao atualizar status de exibição.');
+                    checkbox.prop('checked', !checkbox.prop('checked'));
                 }
             });
         });
-    });
+
+        @if(session('toastr'))
+            toastr.{{ session('toastr.type') }}('{{ session('toastr.message') }}', '{{ session('toastr.title') }}', {
+                timeOut: 1000,
+                closeButton: true,
+                progressBar: true,
+                positionClass: "toast-top-right"
+            });
+        @endif
     </script>
 @stop

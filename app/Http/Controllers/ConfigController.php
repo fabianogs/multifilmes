@@ -6,61 +6,112 @@ use App\Models\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
-
+use App\Models\Unidade;
 class ConfigController extends Controller
 {
     public function edit()
     {
-        $config = Config::findOrFail(1);
-        return view("config.edit", compact("config"));
+        $user = auth()->user();
+        
+        if ($user->role === 'admin') {
+            $config = Config::findOrFail(1);
+        } else {
+            // Se for franqueado, busca a configuração da unidade dele
+            // Buscar o nome da cidade da unidade
+            $unidade = Unidade::find($user->unidade_id);
+            $config = Config::where('unidade_id', $user->unidade_id)->first();
+            
+            if (!$config) {
+                // Se não existir configuração para a unidade, cria uma nova
+                $config = Config::create([
+                    'unidade_id' => $user->unidade_id,
+                    'email' => '',
+                    'endereco' => '',
+                    'cnpj' => '',
+                    'expediente' => '',
+                    'razao_social' => $user->unidade->nome,
+                    'whatsapp' => '',
+                    'facebook' => '',
+                    'instagram' => '',
+                    'twitter' => '',
+                    'youtube' => '',
+                    'linkedin' => '',
+                    'maps' => '',
+                    'arquivo_lgpd' => '',
+                    'texto_lgpd' => '',
+                    'form_email_to' => '',
+                    'email_port' => '',
+                    'email_username' => '',
+                    'email_password' => '',
+                    'email_host' => '',
+                    'celular' => '',
+                    'fone1' => '',
+                    'fone2' => ''
+                ]);
+            }
+        }
+        
+        return view("config.edit", compact("config", "unidade"));
     }
 
     public function update(Request $request, $id)
     {
-        $item = Config::findOrFail($id);
-        if ( $request->texto_contrato) {
-            $item->texto_contrato = $request->texto_contrato;
+        $user = auth()->user();
+        $config = Config::findOrFail($id);
+        
+        // Verifica se o usuário tem permissão para editar esta configuração
+        if ($user->role === 'franqueado' && $config->unidade_id !== $user->unidade_id) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Você não tem permissão para editar esta configuração.');
         }
-        else 
-        {
-            $item->celular = $request->celular;
-            $item->whatsapp = $request->whatsapp;
-            $item->fone1 = $request->fone1;
-            $item->fone2 = $request->fone2;
-            $item->facebook = $request->facebook;
-            $item->instagram = $request->instagram;
-            $item->email = $request->email;
-            $item->twitter = $request->twitter;
-            $item->endereco = $request->endereco;
-            $item->maps = $request->maps;
-            $item->youtube = $request->youtube;
-            $item->linkedin = $request->linkedin;
-            $item->form_email_to = $request->form_email_to;
-            $item->email_port = $request->email_port;
-            $item->email_username = $request->email_username; // email_username
-            $item->email_password = $request->email_password;
-            $item->email_host = $request->email_host;
-            $item->cnpj = $request->cnpj;
+
+        if ($request->texto_contrato) {
+            $config->texto_contrato = $request->texto_contrato;
+        } else {
+            $config->celular = $request->celular;
+            $config->whatsapp = $request->whatsapp;
+            $config->fone1 = $request->fone1;
+            $config->fone2 = $request->fone2;
+            $config->facebook = $request->facebook;
+            $config->instagram = $request->instagram;
+            $config->email = $request->email;
+            $config->twitter = $request->twitter;
+            $config->endereco = $request->endereco;
+            $config->maps = $request->maps;
+            $config->youtube = $request->youtube;
+            $config->linkedin = $request->linkedin;
+            $config->form_email_to = $request->form_email_to;
+            $config->email_port = $request->email_port;
+            $config->email_username = $request->email_username;
+            $config->email_password = $request->email_password;
+            $config->email_host = $request->email_host;
+            $config->cnpj = $request->cnpj;
         }
 
         try {
-            $item->save();
-            Log::info('Dados de configuração editados.',[
+            $config->save();
+            Log::info('Dados de configuração editados.', [
                 'usuario' => auth()->user()->name,
-                'edição' => $item->nome,
+                'config' => $config->razao_social,
             ]);
 
-            return redirect()->route('config')->with('success', 'Item editado com sucesso.');
+            return redirect()->route('config')->with('success', 'Configuração atualizada com sucesso.');
+        } catch (\Exception $e) {
+            Log::error('Erro ao editar configuração: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao atualizar configuração.');
         }
-        catch (\Throwable $th) {~
-            dd($th->getMessage());
-            return redirect()->route('config')->with('error', 'Erro ao editar item. \nCódigo erro:'.$th->getMessage());
-        }     
     }
 
     public function edit_lgpd()
     {
-        $config = Config::findOrFail(1);
+        $user = auth()->user();
+        
+        if ($user->role === 'admin') {
+            $config = Config::findOrFail(1);
+        } else {
+            $config = Config::where('unidade_id', $user->unidade_id)->first();
+        }
+        
         if (request()->is('area_restrita*')) {
             return view("admin.lgpd.edit", compact("config"));
         }
@@ -69,14 +120,27 @@ class ConfigController extends Controller
 
     public function edit_contrato()
     {
-        $config = Config::findOrFail(1);
+        $user = auth()->user();
+        
+        if ($user->role === 'admin') {
+            $config = Config::findOrFail(1);
+        } else {
+            $config = Config::where('unidade_id', $user->unidade_id)->first();
+        }
+        
         return view("admin.config.edit_contrato", compact("config"));
     }
 
-    public function show(){
-        $config = Config::findOrFail(1)->makeHidden('texto_contrato');
-
-
-        return response()->json(['config' => $config]);
+    public function show()
+    {
+        $user = auth()->user();
+        
+        if ($user->role === 'admin') {
+            $config = Config::findOrFail(1);
+        } else {
+            $config = Config::where('unidade_id', $user->unidade_id)->first();
+        }
+        
+        return response()->json(['config' => $config->makeHidden('texto_contrato')]);
     }
 }

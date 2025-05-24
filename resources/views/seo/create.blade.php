@@ -1,43 +1,72 @@
 @extends('adminlte::page')
 
-@section('title', 'Criar SEO')
-
-@section('content_header')
-    <h1>Criar SEO</h1>
-@stop
+@section('title', 'SEO')
 
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <form id="form1" action={{ route('seo.store') }} method="post" enctype="multipart/form-data">
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                Criar SEO
+            </div>
+            <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form action="{{ route('seo.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="unidade_id" value="{{ $unidade_id }}">
                 <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" name="nome" class="form-control" placeholder="Nome" required>
+                    <label for="nome">Nome (*)</label>
+                    <input type="text" name="nome" id="nome" class="form-control" required value="{{ old('nome') }}">
                 </div>
                 <div class="form-group">
-                    <label for="tipo">Tipo</label>
-                    <select name="tipo" id="tipo" class="form-control">
-                        <option value="head">Head</option>
-                        <option value="body">body</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="status">Ativo?</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="1" selected>Sim</option>
-                        <option value="0">Não</option>
+                    <label for="tipo">Tipo (*)</label>
+                    <select name="tipo" id="tipo" class="form-control" required>
+                        <option value="">Selecione...</option>
+                        <option value="head" {{ old('tipo') == 'head' ? 'selected' : '' }}>Head</option>
+                        <option value="body" {{ old('tipo') == 'body' ? 'selected' : '' }}>Body</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="script">Script</label>
-                    <textarea name="script" id="script" cols="30" rows="5" class="form-control"></textarea>
+                    <textarea name="script" id="script" class="form-control" rows="5">{{ old('script') }}</textarea>
                 </div>
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
-            <a href="{{route('seo.index')}}" class="btn btn-secondary btn-sm">Voltar</a>
-        </div>
+                <div class="form-group">
+                    <label for="status">Status (*)</label>
+                    <select name="status" id="status" class="form-control" required>
+                        <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>Ativo</option>
+                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inativo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                    <a href="{{ route('seo.index') }}" class="btn btn-sm btn-secondary">Voltar</a>
+                </div>
             </form>
+        </div>
     </div>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                toastr.success('{{ session('success') }}');
+            @elseif (session('error'))
+                toastr.error('{{ session('error') }}');
+            @endif
+        });
+    </script>
 @stop

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SEO;
+use App\Models\Seo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -15,61 +15,135 @@ class SeoController extends Controller
      */
     public function index()
     {
-		$itens = SEO::all();
-		if (request()->is('area_restrita*')) {
-			return view('seo.index', compact('itens'));
-		}
-        	return response()->json(['seo' => $seo]);
+        $seos = auth()->user()->role === 'admin' 
+            ? Seo::all() 
+            : Seo::where('unidade_id', auth()->user()->unidade_id)->get();
+
+        return view('seo.index', compact('seos'));
     }
 
     public function create()
     {
-        return view('seo.create');
+        $unidade_id = auth()->user()->unidade_id;
+        return view('seo.create', compact('unidade_id'));
     }
 
     public function store(Request $request)
     {
-        $seo = new SEO();
-        $seo->tipo = $request->input('tipo');
-        $seo->script = $request->input('script');
-        $seo->status = $request->input('status');
-        $seo->nome = $request->input('nome');
+        try {
+            $request->validate([
+                'nome' => 'required|string|max:255',
+                'tipo' => 'required|string|in:head,body',
+                'script' => 'required|string',
+            ]);
 
-        $seo->save();
+            $seo = new Seo();
+            $seo->nome = $request->nome;
+            $seo->tipo = $request->tipo;
+            $seo->script = $request->script;
+            $seo->status = $request->status;
+            $seo->unidade_id = auth()->user()->unidade_id;
+            $seo->save();
 
-        return redirect()->route('seo.index')->with('success', 'SEO criado com sucesso!');
+            Log::info('SEO criado com sucesso', [
+                'user' => auth()->user()->name,
+                'unidade_id' => $seo->unidade_id
+            ]);
+
+            return redirect()->route('seo.index')
+                ->with('success', 'SEO criado com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao criar SEO: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Erro ao criar SEO. Por favor, tente novamente.')
+                ->withInput();
+        }
     }
+
     public function edit($id)
     {
-        $seo = SEO::find($id);
+        $seo = Seo::findOrFail($id);
+        
+        if (!auth()->user()->can('acessar-recurso', $seo)) {
+            return redirect()->route('seo.index')
+                ->with('error', 'Você não tem permissão para editar este SEO.');
+        }
+
         return view('seo.edit', compact('seo'));
     }
 
     public function update(Request $request, $id)
     {
-        $seo = SEO::find($id);
-        $seo->tipo = $request->input('tipo');
-        $seo->script = $request->input('script');
-        $seo->status = $request->input('status');
-        $seo->nome = $request->input('nome');
-
-        $seo->save();
-
-        return redirect()->route('seo.index')->with('success', 'SEO atualizado com sucesso!');
-    }
-    public function delete($id)
-    {
-        $item = SEO::find($id);
-
         try {
-            $item->delete();
-            Log::info('Seo apagado ',[
-                'usuario' => auth()->user()->name,
-                'editado' => $item->nome,
+            $seo = Seo::findOrFail($id);
+            
+            if (!auth()->user()->can('acessar-recurso', $seo)) {
+                return redirect()->route('seo.index')
+                    ->with('error', 'Você não tem permissão para atualizar este SEO.');
+            }
+
+            $request->validate([
+                'nome' => 'required|string|max:255',
+                'tipo' => 'required|string|in:head,body',
+                'script' => 'required|string',
             ]);
-            return redirect()->route('seo.index')->with('success', 'SEO deletado com sucesso.');
-        } catch (\Throwable $th) {
-            return redirect()->route('seo.index')->with('error', 'Erro ao deletar SEO. \nCódigo erro:'.$th->getMessage());
+
+            $seo->nome = $request->nome;
+            $seo->tipo = $request->tipo;
+            $seo->script = $request->script;
+            $seo->status = $request->status;
+            $seo->save();
+
+            Log::info('SEO atualizado com sucesso', [
+                'user' => auth()->user()->name,
+                'unidade_id' => $seo->unidade_id
+            ]);
+
+            return redirect()->route('seo.index')
+                ->with('success', 'SEO atualizado com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar SEO: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Erro ao atualizar SEO. Por favor, tente novamente.')
+                ->withInput();
         }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $seo = Seo::findOrFail($id);
+            
+            if (!auth()->user()->can('acessar-recurso', $seo)) {
+                return redirect()->route('seo.index')
+                    ->with('error', 'Você não tem permissão para excluir este SEO.');
+            }
+
+            $seo->delete();
+
+            Log::info('SEO excluído com sucesso', [
+                'user' => auth()->user()->name,
+                'unidade_id' => $seo->unidade_id
+            ]);
+
+            return redirect()->route('seo.index')
+                ->with('success', 'SEO excluído com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao excluir SEO: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Erro ao excluir SEO. Por favor, tente novamente.');
+        }
+    }
+
+    public function show($id)
+    {
+        $seo = Seo::findOrFail($id);
+        
+        if (!auth()->user()->can('acessar-recurso', $seo)) {
+            return redirect()->route('seo.index')
+                ->with('error', 'Você não tem permissão para visualizar este SEO.');
+        }
+
+        return view('seo.show', compact('seo'));
     }
 }
