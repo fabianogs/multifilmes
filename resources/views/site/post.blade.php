@@ -54,6 +54,7 @@
                 </div>
             </div>
         </div>
+        @if($post->imagensGaleria->count() > 0)
         <div class="row mg-top-40 a-center">
             <div class="col md-up-10 md-up-offset-1">
                 <div class="carousel" data-ix="carousel" data-carousel-autoplay="false" data-carousel-loop="false"
@@ -64,10 +65,14 @@
                     data-carousel-auto-height="false" data-carousel-mouse-drag="false" data-carousel-touch-drag="true"
                     data-carousel-pull-drag="true" data-carousel-auto-play-timeout="3500"
                     data-carousel-auto-play-hover-pause="true" data-carousel-thumbs="true"
-                    data-carousel-thumbs-image="true"> <?php for ($i = 1; $i <= 10; $i++) { ?> <img
-                        src="holder.js/1030x600?auto=yes" alt=""> <?php } ?> </div>
+                    data-carousel-thumbs-image="true"> 
+                        @foreach($post->imagensGaleria as $imagem)
+                            <img src="{{asset('storage/'.$imagem->imagem)}}" alt="">
+                        @endforeach
+                    </div>
             </div>
         </div>
+        @endif
     </section>
 </main>
 @endsection

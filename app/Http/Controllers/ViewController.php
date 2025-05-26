@@ -61,7 +61,7 @@ class ViewController extends Controller
     }
 
     public function post($slug){
-        $post = Post::where('slug', $slug)->first();
+        $post = Post::where('slug', $slug)->with('imagensGaleria')->first();
         return view('site.post', compact('post'));
     }
 }

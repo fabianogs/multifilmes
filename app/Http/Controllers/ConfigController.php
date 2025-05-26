@@ -9,16 +9,61 @@ use App\Models\User;
 use App\Models\Unidade;
 class ConfigController extends Controller
 {
+    public function index()
+    {
+        $user = auth()->user();
+        
+        if ($user->role === 'admin') {
+            // Se for admin, mostra a lista de unidades com suas configurações
+            $configs = Config::with('unidade')->get();
+            return view('config.index', compact('configs'));
+        } else {
+            // Se for franqueado, redireciona para a edição da configuração da sua unidade
+            $config = Config::where('unidade_id', $user->unidade_id)->first();
+            
+            if (!$config) {
+                // Se não existir configuração para a unidade, cria uma nova
+                $config = Config::create([
+                    'unidade_id' => $user->unidade_id,
+                    'email' => '',
+                    'endereco' => '',
+                    'cnpj' => '',
+                    'expediente' => '',
+                    'razao_social' => $user->unidade->nome,
+                    'whatsapp' => '',
+                    'facebook' => '',
+                    'instagram' => '',
+                    'twitter' => '',
+                    'youtube' => '',
+                    'linkedin' => '',
+                    'maps' => '',
+                    'arquivo_lgpd' => '',
+                    'texto_lgpd' => '',
+                    'form_email_to' => '',
+                    'email_port' => '',
+                    'email_username' => '',
+                    'email_password' => '',
+                    'email_host' => '',
+                    'celular' => '',
+                    'fone1' => '',
+                    'fone2' => ''
+                ]);
+            }
+            
+            return redirect()->route('config.edit', ['id' => $config->id]);
+        }
+    }
+    
     public function edit()
     {
         $user = auth()->user();
+        $unidade = Unidade::find($user->unidade_id);
         
         if ($user->role === 'admin') {
             $config = Config::findOrFail(1);
         } else {
             // Se for franqueado, busca a configuração da unidade dele
             // Buscar o nome da cidade da unidade
-            $unidade = Unidade::find($user->unidade_id);
             $config = Config::where('unidade_id', $user->unidade_id)->first();
             
             if (!$config) {
@@ -50,8 +95,7 @@ class ConfigController extends Controller
                 ]);
             }
         }
-        
-        return view("config.edit", compact("config", "unidade"));
+        return view("config.edit", compact("config", "unidade"  ));
     }
 
     public function update(Request $request, $id)

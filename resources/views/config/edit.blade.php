@@ -181,7 +181,7 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-                    <a href="{{route('config')}}" class="btn btn-secondary btn-sm">Voltar</a>
+                    <a href="{{url()->previous()}}" class="btn btn-secondary btn-sm">Voltar</a>
                 </div>
                     </form>
     </div>

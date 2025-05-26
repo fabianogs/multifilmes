@@ -18,7 +18,11 @@ Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name(
 Route::get('/unidades', function () {
     return view('site.unidades');
 })->name('site.unidades');
-Route::get('/post/{slug}', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
+
+// Grupo de rotas do site
+Route::prefix('site')->group(function () {
+    Route::get('/post/{slug}', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
+});
 
 Route::middleware('auth')->prefix('area_restrita')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,8 +32,12 @@ Route::middleware('auth')->prefix('area_restrita')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\ViewController::class, 'index'])->name('dashboard');
 
     // Rotas de Configuração e SEO (acessíveis para todos os usuários autenticados)
-    Route::get('/config', [ConfigController::class, 'edit'])->name('config');
-    Route::put('/config/update/{id}', [ConfigController::class, 'update'])->name('config.update');    
+    Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
+    Route::get('/config/{id}/edit', [ConfigController::class, 'edit'])->name('config.edit');
+    Route::put('/config/{id}', [ConfigController::class, 'update'])->name('config.update');
+    Route::get('/config/lgpd', [ConfigController::class, 'edit_lgpd'])->name('config.lgpd');
+    Route::get('/config/contrato', [ConfigController::class, 'edit_contrato'])->name('config.contrato');
+    Route::get('/config/show', [ConfigController::class, 'show'])->name('config.show');
 
     Route::get('/seo', [SeoController::class, 'index'])->name('seo.index');
     Route::get('/seo/create', [SeoController::class, 'create'])->name('seo.create');
