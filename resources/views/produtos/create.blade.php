@@ -52,6 +52,23 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="categoria_id">Categoria</label>
+                            <select class="form-control @error('categoria_id') is-invalid @enderror" id="categoria_id" name="categoria_id" required>
+                                <option value="">Selecione uma categoria</option>
+                                @foreach($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                        {{ $categoria->nome }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('categoria_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="imagem">Imagem (520x300px)</label>
                             <div class="input-group">
                                 <div class="custom-file">

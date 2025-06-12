@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use App\Models\Marca;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +26,8 @@ class ProdutoController extends Controller
     public function create()
     {
         $marcas = Marca::all();
-        return view('produtos.create', compact('marcas'));
+        $categorias = Categoria::all();
+        return view('produtos.create', compact('marcas', 'categorias'));
     }
 
     /**
@@ -38,6 +40,7 @@ class ProdutoController extends Controller
             'descricao' => 'nullable|string',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'marca_id' => 'required|exists:marcas,id',
+            'categoria_id' => 'required|exists:categorias,id',
             'ativo' => 'boolean'
         ]);
 
@@ -66,8 +69,9 @@ class ProdutoController extends Controller
     public function edit($id)
     {
         $marcas = Marca::all();
+        $categorias = Categoria::all();
         $produto = Produto::findOrFail($id);
-        return view('produtos.edit', compact('produto', 'marcas'));
+        return view('produtos.edit', compact('produto', 'marcas', 'categorias'));
     }
 
     /**
@@ -80,8 +84,8 @@ class ProdutoController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'marca_id' => 'nullable|exists:marcas,id',
-            'categoria_id' => 'nullable|exists:categorias,id',
+            'marca_id' => 'required|exists:marcas,id',
+            'categoria_id' => 'required|exists:categorias,id',
             'ativo' => 'boolean'
         ]);
 
