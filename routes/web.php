@@ -15,6 +15,7 @@ Route::get('/quem-somos', function () {
 })->name('site.quem-somos');
 Route::get('/solucoes/{slug}', [App\Http\Controllers\ViewController::class, 'solucoes'])->name('site.solucoes');
 Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name('site.blog');
+Route::get('/post', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
 Route::get('/unidades', function () {
     return view('site.unidades');
 })->name('site.unidades');

@@ -119,7 +119,7 @@
                         data-carousel-thumbs="false"
                         data-carousel-thumbs-image="false"> 
                         @foreach ($posts as $post)
-                            <a href="post" class="item">
+                            <a href="{{ route('site.post', $post->slug) }}" class="item">
                                 <div class="item-image">
                                     <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="">
                                 </div>

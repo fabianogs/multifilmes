@@ -30,6 +30,27 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label for="icone">Ícone (30x20 px)</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="icone" id="icone" class="custom-file-input" onchange="previewImage(this)">
+                                    <label class="custom-file-label" for="icone">Escolha um ícone</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                @if($categoria->icone)
+                                    <img id="imagePreview" src="{{ asset('storage/' . $categoria->icone) }}" alt="Preview" style="max-width: 200px;">
+                                @else
+                                    <img id="imagePreview" src="#" alt="Preview" style="max-width: 200px; display: none;">
+                                @endif
+                            </div>
+                            @error('icone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="form-group">
                             <label>Soluções</label>
                             <div class="form-check">
@@ -50,8 +71,6 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
-
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -66,11 +85,35 @@
 
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <style>
+        .imagePreview{
+            display: none;
+            width: 50%;
+            height: 50%;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+    </style>
 @stop
 
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{{ asset('js/bs-custom-file-input.min.js') }}"></script>
     <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         // Atualiza o nome do arquivo no input file
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {
             var fileName = e.target.files[0].name;

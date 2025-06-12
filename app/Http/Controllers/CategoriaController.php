@@ -33,10 +33,18 @@ class CategoriaController extends Controller
             'descricao' => 'nullable|string',
             'solucoes' => 'nullable|array',
             'solucoes.*' => 'exists:solucoes,id',
+            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $data = $request->only(['nome', 'descricao']);
         $data['slug'] = Str::slug($request->nome);
+
+        // Upload do ícone
+        if ($request->hasFile('icone')) {
+            $file = $request->file('icone');
+            $filename = Str::slug($request->nome) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $data['icone'] = $file->storeAs('categorias/icones', $filename, 'public');
+        }
 
         $categoria = Categoria::create($data);
 
@@ -65,17 +73,30 @@ class CategoriaController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
-            'solucoes' => 'array', // pode ser vazio (nenhuma marcada)
+            'solucoes' => 'array',
             'solucoes.*' => 'exists:solucoes,id',
+            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $data = $request->only(['nome', 'descricao']);
         $data['slug'] = Str::slug($request->nome);
 
+        // Upload do ícone
+        if ($request->hasFile('icone')) {
+            // Remove o ícone antigo se existir
+            if ($categoria->icone) {
+                Storage::disk('public')->delete($categoria->icone);
+            }
+
+            $file = $request->file('icone');
+            $filename = Str::slug($request->nome) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $data['icone'] = $file->storeAs('categorias/icones', $filename, 'public');
+        }
+
         $categoria->update($data);
 
         // Atualiza os relacionamentos many-to-many
-        $categoria->solucoes()->sync($request->input('solucoes', [])); // se nada for enviado, remove todos
+        $categoria->solucoes()->sync($request->input('solucoes', []));
 
         return redirect()->route('categorias.index')
             ->with('toastr', [
@@ -88,8 +109,9 @@ class CategoriaController extends Controller
 
     public function destroy(Categoria $categoria)
     {
-        if ($categoria->imagem) {
-            Storage::disk('public')->delete($categoria->imagem);
+        // Remove o ícone se existir
+        if ($categoria->icone) {
+            Storage::disk('public')->delete($categoria->icone);
         }
 
         $categoria->delete();

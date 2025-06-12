@@ -21,36 +21,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe></div>
                 <div class="block mg-top-30">
-                    <p class="block-text">Estilo e segurança unidos em um só produto. Seu carro com a estética
-                        diferenciada, valorizando ainda mais suas conquistas, além de proteção contra raios solares,
-                        antivandalismo e muito mais privacidade, aumentando a experiência e o conforto de dirigir. Ainda
-                        contamos com opções de películas com um fator de proteção solar (FPS) superior a 1.000.Estilo e
-                        segurança unidos em um só produto. Seu carro com a estética diferenciada, valorizando ainda mais
-                        suas conquistas, além de proteção contra raios solares, antivandalismo e muito mais privacidade,
-                        aumentando a experiência e o conforto de dirigir. Ainda contamos com opções de películas com um
-                        fator de proteção solar (FPS) superior a 1.000.Estilo e segurança unidos em um só produto. Seu
-                        carro com a estética diferenciada, valorizando ainda mais suas conquistas, além de proteção
-                        contra raios solares, antivandalismo e muito mais privacidade, aumentando a experiência e o
-                        conforto de dirigir. Ainda contamos com opções de películas com um fator de proteção solar (FPS)
-                        superior a 1.000.Estilo e segurança unidos em um só produto. Seu carro com a estética
-                        diferenciada, valorizando ainda mais suas conquistas, além de proteção contra raios solares,
-                        antivandalismo e muito mais privacidade, aumentando a experiência e o conforto de dirigir. Ainda
-                        contamos com opções de películas com um fator de proteção solar (FPS) superior a
-                        1.000.<br>Estilo e segurança unidos em um só produto. Seu carro com a estética diferenciada,
-                        valorizando ainda mais suas conquistas, além de proteção contra raios solares, antivandalismo e
-                        muito mais privacidade, aumentando a experiência e o conforto de dirigir. Ainda contamos com
-                        opções de películas com um fator de proteção solar (FPS) superior a 1.000.Estilo e segurança
-                        unidos em um só produto. Seu carro com a estética diferenciada, valorizando ainda mais suas
-                        conquistas, além de proteção contra raios solares, antivandalismo e muito mais privacidade,
-                        aumentando a experiência e o conforto de dirigir. Ainda contamos com opções de películas com um
-                        fator de proteção solar (FPS) superior a 1.000.Estilo e segurança unidos em um só produto. Seu
-                        carro com a estética diferenciada, valorizando ainda mais suas conquistas, além de proteção
-                        contra raios solares, antivandalismo e muito mais privacidade, aumentando a experiência e o
-                        conforto de dirigir. Ainda contamos com opções de películas com um fator de proteção solar (FPS)
-                        superior a 1.000.Estilo e segurança unidos em um só produto. Seu carro com a estética
-                        diferenciada, valorizando ainda mais suas conquistas, além de proteção contra raios solares,
-                        antivandalismo e muito mais privacidade, aumentando a experiência e o conforto de dirigir. Ainda
-                        contamos com opções de películas com um fator de proteção solar (FPS) superior a 1.000.</p>
+                    <p class="block-text">{{ $post->conteudo }}</p>
                 </div>
             </div>
         </div>

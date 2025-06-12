@@ -15,6 +15,7 @@
                     <table class="table table-hover table-sm" id="categoriasTable">
                         <thead>
                             <tr>
+                                <th width="50">Ícone</th>
                                 <th>Categoria</th>
                                 <th>Solução</th>
                                 <th width="15%">Ações</th>
@@ -23,6 +24,13 @@
                         <tbody>
                             @foreach($categorias as $categoria)
                                 <tr class="clickable-row" data-id="{{ $categoria->id }}">
+                                    <td>
+                                        @if($categoria->icone)
+                                            <img src="{{ asset('storage/' . $categoria->icone) }}" alt="{{ $categoria->nome }}" class="img-thumbnail" style="max-width: 40px; max-height: 40px;">
+                                        @else
+                                            <i class="fas fa-image text-muted" style="font-size: 24px;"></i>
+                                        @endif
+                                    </td>
                                     <td>{{ $categoria->nome }}</td>
                                     <td>
                                         @if($categoria->solucoes->isNotEmpty())
@@ -58,6 +66,16 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .img-thumbnail {
+            padding: 0.25rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 @stop
 
 @section('js')
@@ -88,7 +106,10 @@
                     url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json'
                 },
                 pageLength: 10,
-                responsive: true
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [0, 3] } // Desabilita ordenação nas colunas de ícone e ações
+                ]
             });
 
             $('.clickable-row').on('dblclick', function () {

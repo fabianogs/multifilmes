@@ -13,7 +13,8 @@ class Categoria extends Model
         'nome',
         'descricao',
         'slug',
-        'solucao_id'
+        'solucao_id',
+        'icone'
     ];
 
     public function solucoes(): BelongsToMany
