@@ -75,13 +75,15 @@ class UnidadeController extends Controller
         }
     }
 
-    public function edit(Unidade $unidade)
+    public function edit($id)
     {
+        $unidade = Unidade::findOrFail($id);
         return view('unidades.edit', compact('unidade'));
     }
 
-    public function update(Request $request, Unidade $unidade)
+    public function update(Request $request, $id)
     {
+        $unidade = Unidade::findOrFail($id);
         $request->validate([
             'nome' => 'required|string|max:255',
             'uf' => 'required|string|size:2',
