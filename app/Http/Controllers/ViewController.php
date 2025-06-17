@@ -9,7 +9,7 @@ use App\Models\Solucao;
 use App\Models\Unidade;
 use App\Models\Post;
 use App\Models\Config;
-
+use App\Models\Banner;
 
 class ViewController extends Controller
 {
@@ -39,12 +39,14 @@ class ViewController extends Controller
         $posts = Post::all();
         $config = Config::first();
         $qtd_posts = Post::all()->count();
+        $banners = Banner::where('ativo', 1)->first();
 
         return view('site.home', compact('solucoes',
         'unidades',
                     'posts',
                     'config',
-                    'qtd_posts'
+                    'qtd_posts',
+                    'banners'
                 ));
     }
 

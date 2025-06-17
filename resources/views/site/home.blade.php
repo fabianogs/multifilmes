@@ -2,11 +2,11 @@
 
 @section('content')
         <section class="section-banner">
-            <div class="item"><img src="img/banner.jpg" alt="">
+            <div class="item"><img src="{{ asset('storage/' . $banners->imagem) }}" alt="">
                 <div class="item-row">
                     <div class="item-text">
-                        <h1>PROTEÇÃO<br>NUNCA É DEMAIS</h1>
-                        <h2>conheça a PPF - PELÍCULA PROTETORA DE PINTURA</h2>
+                        <h1>{{$banners->titulo}}</h1>
+                        <h2>{{$banners->subtitulo}}</h2>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,11 @@
                                         <div class="col md-up-3 sm-6">
                                             <a href="{{route('site.solucoes',$solucao->slug)}}" class="box">
                                                 <div class="box-icon">
-                                                    <img src="img/icons/car.png" alt="">
+                                                    @if($categoria->icone)
+                                                        <img src="{{ asset('storage/' . $categoria->icone) }}" alt="{{ $categoria->nome }}">
+                                                    @else
+                                                        <i class="fas fa-image"></i>
+                                                    @endif
                                                 </div>
                                                 <h4 class="box-title">{{ $categoria->nome }}</h4>
                                                 <p class="box-text">{{ $categoria->descricao }}</p>

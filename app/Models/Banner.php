@@ -8,6 +8,6 @@ class Banner extends Model
 {
     //
     protected $fillable = [
-        'titulo', 'subtitulo','link', 'midia_id', 'ativo'
+        'titulo', 'subtitulo','link', 'imagem', 'ativo', 
     ];
 }

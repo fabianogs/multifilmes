@@ -29,17 +29,7 @@
                     <div class="d-flex fw-wrap"> 
                         @foreach ($solucao->categorias as $categoria)
                             <div class="col md-up-3 sm-4"> 
-                                <a href="{{ route('site.solucoes', $solucao->slug) }}" class="box">
-                                    <div class="box-icon">
-                                        @if($categoria->icone)
-                                            <img src="{{ asset('storage/' . $categoria->icone) }}" alt="{{ $categoria->nome }}">
-                                        @else
-                                            <i class="fas fa-image text-muted" style="font-size: 24px;"></i>
-                                        @endif
-                                    </div>
-                                    <h4 class="box-title">{{ $categoria->nome }}</h4>
-                                    <p class="box-text">{{ $categoria->descricao }}</p>
-                                </a>
+                                
                             </div> 
                         @endforeach
                     </div>
