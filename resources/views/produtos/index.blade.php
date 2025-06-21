@@ -27,7 +27,7 @@
                             @foreach($produtos as $produto)
                                 <tr class="clickable-row" data-id="{{ $produto->id }}">
                                     <td>{{ $produto->nome }}</td>
-                                    <td>{{ $produto->categoria->nome }}</td>
+                                    <td>{{ $produto->categoria?->nome ?? 'Sem categoria' }}</td>
                                     <td>{{ $produto->marca->nome }}</td>
                                     <td>
                                         @if($produto->imagem)
