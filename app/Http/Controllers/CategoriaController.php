@@ -31,12 +31,13 @@ class CategoriaController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
+            'video' => 'nullable|url|max:500',
             'solucoes' => 'nullable|array',
             'solucoes.*' => 'exists:solucoes,id',
             'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $data = $request->only(['nome', 'descricao']);
+        $data = $request->only(['nome', 'descricao', 'video']);
         $data['slug'] = Str::slug($request->nome);
 
         // Upload do ícone
@@ -73,12 +74,13 @@ class CategoriaController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
+            'video' => 'nullable|url|max:500',
             'solucoes' => 'array',
             'solucoes.*' => 'exists:solucoes,id',
             'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $data = $request->only(['nome', 'descricao']);
+        $data = $request->only(['nome', 'descricao', 'video']);
         $data['slug'] = Str::slug($request->nome);
 
         // Upload do ícone

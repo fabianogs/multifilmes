@@ -35,6 +35,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="video">URL do Vídeo</label>
+                            <input type="url" class="form-control @error('video') is-invalid @enderror" id="video" name="video" value="{{ old('video') }}" placeholder="https://www.youtube.com/watch?v=...">
+                            @error('video')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="imagem">Ícone (30x20 px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
