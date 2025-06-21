@@ -69,6 +69,31 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Soluções</label>
+                            <div class="row">
+                                @foreach($solucoes as $solucao)
+                                    <div class="col-md-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" 
+                                                   id="solucao_{{ $solucao->id }}" 
+                                                   name="solucoes[]" 
+                                                   value="{{ $solucao->id }}"
+                                                   {{ in_array($solucao->id, old('solucoes', [])) ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="solucao_{{ $solucao->id }}">
+                                                {{ $solucao->titulo }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @error('solucoes')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="imagem">Imagem (520x300px)</label>
                             <div class="input-group">
                                 <div class="custom-file">

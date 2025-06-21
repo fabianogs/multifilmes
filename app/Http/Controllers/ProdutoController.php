@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use App\Models\Marca;
 use App\Models\Categoria;
+use App\Models\Solucao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,8 @@ class ProdutoController extends Controller
     {
         $marcas = Marca::all();
         $categorias = Categoria::all();
-        return view('produtos.create', compact('marcas', 'categorias'));
+        $solucoes = Solucao::all();
+        return view('produtos.create', compact('marcas', 'categorias', 'solucoes'));
     }
 
     /**
@@ -41,6 +43,8 @@ class ProdutoController extends Controller
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'marca_id' => 'required|exists:marcas,id',
             'categoria_id' => 'required|exists:categorias,id',
+            'solucoes' => 'nullable|array',
+            'solucoes.*' => 'exists:solucoes,id',
             'ativo' => 'boolean'
         ]);
 
@@ -58,7 +62,11 @@ class ProdutoController extends Controller
             $validated['imagem'] = $path;
         }
 
-        Produto::create($validated);
+        $produto = Produto::create($validated);
+        
+        if ($request->has('solucoes')) {
+            $produto->solucoes()->attach($request->solucoes);
+        }
 
         return redirect()->route('produtos.index')->with('success', 'Produto criado com sucesso!');
     }
@@ -70,8 +78,9 @@ class ProdutoController extends Controller
     {
         $marcas = Marca::all();
         $categorias = Categoria::all();
-        $produto = Produto::findOrFail($id);
-        return view('produtos.edit', compact('produto', 'marcas', 'categorias'));
+        $solucoes = Solucao::all();
+        $produto = Produto::with('solucoes')->findOrFail($id);
+        return view('produtos.edit', compact('produto', 'marcas', 'categorias', 'solucoes'));
     }
 
     /**
@@ -86,6 +95,8 @@ class ProdutoController extends Controller
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'marca_id' => 'required|exists:marcas,id',
             'categoria_id' => 'required|exists:categorias,id',
+            'solucoes' => 'nullable|array',
+            'solucoes.*' => 'exists:solucoes,id',
             'ativo' => 'boolean'
         ]);
 
@@ -109,6 +120,9 @@ class ProdutoController extends Controller
         }
 
         $produto->update($validated);
+        
+        // Sincroniza as soluções
+        $produto->solucoes()->sync($request->solucoes ?? []);
 
         return redirect()->route('produtos.index')->with('success', 'Produto atualizado com sucesso!');
     }
