@@ -30,8 +30,8 @@
             <nav class="footer-menu">
                 <ul>
                     <li><a href="{{ route('site.quem-somos')}}">Sobre nós</a></li>
-                    <li><a href="{{route('site.solucoes', 'automotivas')}}">Automotivas</a></li>
-                    <li><a href="{{route('site.solucoes', 'residenciais-corporativas')}}">Residenciais e Corporativas</a></li>
+                    <li><a href="#">Automotivas</a></li>
+                    <li><a href="#">Residenciais e Corporativas</a></li>
                     <li><a href="{{route('site.unidades')}}">Unidades</a></li>
                     <li><a href="blog">Universo Multifilmes</a></li>
                 </ul>

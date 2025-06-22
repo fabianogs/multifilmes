@@ -13,12 +13,14 @@ Route::get('/home', [App\Http\Controllers\ViewController::class, 'home'])->name(
 Route::get('/quem-somos', function () {
     return view('site.quem-somos');
 })->name('site.quem-somos');
-Route::get('/solucoes/{slug}', [App\Http\Controllers\ViewController::class, 'solucoes'])->name('site.solucoes');
+// Route::get('/solucoes/{slug}', [App\Http\Controllers\ViewController::class, 'solucoes'])->name('site.solucoes');
+Route::get('/solucoes/{slug_solucao}/{slug_categoria}', [App\Http\Controllers\ViewController::class, 'categorias_solucao'])->name('site.categorias_solucao');
 Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name('site.blog');
 Route::get('/post', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
 Route::get('/unidades', function () {
     return view('site.unidades');
 })->name('site.unidades');
+Route::get('/produto/{slug}', [App\Http\Controllers\ViewController::class, 'produto'])->name('site.produto');
 
 // Grupo de rotas do site
 Route::prefix('site')->group(function () {

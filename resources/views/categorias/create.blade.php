@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="video">URL do Vídeo</label>
+                            <label for="video">URL do Vídeo (<a href="#" data-toggle="tooltip" data-placement="top" title="Substitua a url do link por embed. Desta forma: https://www.youtube.com/watch?v=C6Ficu-tySQ para https://www.youtube.com/embed/C6Ficu-tySQ">ajuda</a>)</label>
                             <input type="url" class="form-control @error('video') is-invalid @enderror" id="video" name="video" value="{{ old('video') }}" placeholder="https://www.youtube.com/watch?v=...">
                             @error('video')
                                 <span class="invalid-feedback" role="alert">
@@ -125,6 +125,11 @@
                 reader.readAsDataURL(file);
             }
         }
+
+        // Inicializar tooltips do Bootstrap
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
     @if(session('toastr'))
         <script>

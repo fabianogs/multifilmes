@@ -95,7 +95,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imagem">Imagem</label>
+                            <label for="imagem">Imagem (520x300 px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input @error('imagem') is-invalid @enderror" id="imagem" name="imagem" onchange="previewImage(this);">

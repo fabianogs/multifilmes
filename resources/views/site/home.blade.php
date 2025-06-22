@@ -48,7 +48,7 @@
                                 <div class="row w-100">
                                     @foreach ($linha as $categoria)
                                         <div class="col md-up-3 sm-6">
-                                            <a href="{{route('site.solucoes',$solucao->slug)}}" class="box">
+                                            <a href="{{route('site.categorias_solucao',[$solucao->slug, $categoria->slug])}}" class="box">
                                                 <div class="box-icon">
                                                     @if($categoria->icone)
                                                         <img src="{{ asset('storage/' . $categoria->icone) }}" alt="{{ $categoria->nome }}">

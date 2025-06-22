@@ -50,10 +50,22 @@ class ViewController extends Controller
                 ));
     }
 
-    public function solucoes($slug){
+    public function categorias_solucao($slug_solucao, $slug_categoria){
 
-        $solucao = Solucao::where('slug', $slug)->with('categorias')->first();
-        return view('site.solucoes', compact('solucao'));
+        $banners = Banner::where('ativo', 1)->first();
+
+        $solucao = Solucao::where('slug', $slug_solucao)->with('categorias')->first();
+        $categoria = Categoria::where('slug', $slug_categoria)->first();
+        
+        // Recuperar produtos que pertencem tanto à categoria quanto à solução
+        $produtos = Produto::where('categoria_id', $categoria->id)
+            ->whereHas('solucoes', function($query) use ($solucao) {
+                $query->where('solucao_id', $solucao->id);
+            })
+            ->with(['marca', 'categoria'])
+            ->get();
+            
+        return view('site.solucoes', compact('solucao', 'banners', 'categoria', 'produtos'));
     }
 
     public function blog(){
@@ -65,5 +77,10 @@ class ViewController extends Controller
     public function post($slug){
         $post = Post::where('slug', $slug)->with('imagensGaleria')->first();
         return view('site.post', compact('post'));
+    }
+
+    public function produto($slug){
+        $produto = Produto::where('slug', $slug)->first();
+        return view('site.produto', compact('produto'));
     }
 }
