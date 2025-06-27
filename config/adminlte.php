@@ -349,12 +349,6 @@ return [
             'can'         => 'admin',
         ],
         [
-            'text'        => 'Produtos',
-            'url'         => 'area_restrita/produtos',
-            'icon'        => 'fas fa-fw fa-box',
-            'can'         => 'admin',
-        ],
-        [
             'text'        => 'Posts',
             'url'         => 'area_restrita/posts',
             'icon'        => 'fas fa-fw fa-newspaper',
