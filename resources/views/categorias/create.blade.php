@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Nova Categoria</h3>
                 </div>
-                <form action="{{ route('categorias.store') }}" method="POST">
+                <form action="{{ route('categorias.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -45,7 +45,25 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imagem">Ícone (30x20 px)</label>
+                            <label for="imagem">Imagem (520x300px)</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="imagem" id="imagem" class="custom-file-input" onchange="previewImagem(this)">
+                                    <label class="custom-file-label" for="imagem">Escolha uma imagem</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <img id="imagemPreview" src="#" alt="Preview" style="max-width: 200px; display: none;">
+                            </div>
+                            @error('imagem')
+                                <span class="text-danger" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icone">Ícone (30x20 px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" name="icone" id="icone" class="custom-file-input" onchange="previewImage(this)">
@@ -55,7 +73,7 @@
                             <div class="mt-2">
                                 <img id="imagePreview" src="#" alt="Preview" style="max-width: 200px; display: none;">
                             </div>
-                        </div>                             
+                        </div>
 
                         <div class="form-group">
                             <label>Soluções</label>
@@ -115,6 +133,19 @@
     <script>
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewImagem(input) {
+            const preview = document.getElementById('imagemPreview');
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();

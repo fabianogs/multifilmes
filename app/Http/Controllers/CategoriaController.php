@@ -34,7 +34,8 @@ class CategoriaController extends Controller
             'video' => 'nullable|url|max:500',
             'solucoes' => 'nullable|array',
             'solucoes.*' => 'exists:solucoes,id',
-            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $data = $request->only(['nome', 'descricao', 'video']);
@@ -43,8 +44,15 @@ class CategoriaController extends Controller
         // Upload do ícone
         if ($request->hasFile('icone')) {
             $file = $request->file('icone');
-            $filename = Str::slug($request->nome) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = Str::slug($request->nome) . '_icone_' . time() . '.' . $file->getClientOriginalExtension();
             $data['icone'] = $file->storeAs('categorias/icones', $filename, 'public');
+        }
+
+        // Upload da imagem
+        if ($request->hasFile('imagem')) {
+            $file = $request->file('imagem');
+            $filename = Str::slug($request->nome) . '_imagem_' . time() . '.' . $file->getClientOriginalExtension();
+            $data['imagem'] = $file->storeAs('categorias/imagens', $filename, 'public');
         }
 
         $categoria = Categoria::create($data);
@@ -77,7 +85,8 @@ class CategoriaController extends Controller
             'video' => 'nullable|url|max:500',
             'solucoes' => 'array',
             'solucoes.*' => 'exists:solucoes,id',
-            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'icone' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $data = $request->only(['nome', 'descricao', 'video']);
@@ -91,8 +100,20 @@ class CategoriaController extends Controller
             }
 
             $file = $request->file('icone');
-            $filename = Str::slug($request->nome) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = Str::slug($request->nome) . '_icone_' . time() . '.' . $file->getClientOriginalExtension();
             $data['icone'] = $file->storeAs('categorias/icones', $filename, 'public');
+        }
+
+        // Upload da imagem
+        if ($request->hasFile('imagem')) {
+            // Remove a imagem antiga se existir
+            if ($categoria->imagem) {
+                Storage::disk('public')->delete($categoria->imagem);
+            }
+
+            $file = $request->file('imagem');
+            $filename = Str::slug($request->nome) . '_imagem_' . time() . '.' . $file->getClientOriginalExtension();
+            $data['imagem'] = $file->storeAs('categorias/imagens', $filename, 'public');
         }
 
         $categoria->update($data);
@@ -114,6 +135,11 @@ class CategoriaController extends Controller
         // Remove o ícone se existir
         if ($categoria->icone) {
             Storage::disk('public')->delete($categoria->icone);
+        }
+
+        // Remove a imagem se existir
+        if ($categoria->imagem) {
+            Storage::disk('public')->delete($categoria->imagem);
         }
 
         $categoria->delete();

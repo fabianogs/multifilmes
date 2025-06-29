@@ -40,6 +40,26 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="imagem">Imagem (520x300 px)</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="imagem" id="imagem" class="custom-file-input" onchange="previewImagem(this)">
+                                    <label class="custom-file-label" for="imagem">Escolha uma imagem</label>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                @if($categoria->imagem)
+                                    <img id="imagemPreview" src="{{ asset('storage/' . $categoria->imagem) }}" alt="Preview" style="max-width: 200px;">
+                                @else
+                                    <img id="imagemPreview" src="#" alt="Preview" style="max-width: 200px; display: none;">
+                                @endif
+                            </div>
+                            @error('imagem')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="icone">Ícone (30x20 px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -111,6 +131,19 @@
     <script>
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewImagem(input) {
+            const preview = document.getElementById('imagemPreview');
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();

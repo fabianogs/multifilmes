@@ -15,16 +15,12 @@ class Categoria extends Model
         'slug',
         'solucao_id',
         'icone',
-        'video'
+        'video',
+        'imagem'
     ];
 
     public function solucoes(): BelongsToMany
     {
         return $this->belongsToMany(Solucao::class, 'categoria_solucao');
-    }
-
-    public function produtos(): HasMany
-    {
-        return $this->hasMany(Produto::class);
     }
 }

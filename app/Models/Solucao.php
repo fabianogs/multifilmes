@@ -18,9 +18,4 @@ class Solucao extends Model
     {
         return $this->belongsToMany(Categoria::class, 'categoria_solucao');
     }
-
-    public function produtos(): BelongsToMany
-    {
-        return $this->belongsToMany(Produto::class, 'produto_solucao');
-    }
 }

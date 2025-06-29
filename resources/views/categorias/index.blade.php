@@ -16,6 +16,7 @@
                         <thead>
                             <tr>
                                 <th width="50">Ícone</th>
+                                <th width="80">Imagem</th>
                                 <th>Categoria</th>
                                 <th>Solução</th>
                                 <th width="15%">Ações</th>
@@ -29,6 +30,13 @@
                                             <img src="{{ asset('storage/' . $categoria->icone) }}" alt="{{ $categoria->nome }}" class="img-thumbnail" style="max-width: 40px; max-height: 40px;">
                                         @else
                                             <i class="fas fa-image text-muted" style="font-size: 24px;"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($categoria->imagem)
+                                            <img src="{{ asset('storage/' . $categoria->imagem) }}" alt="{{ $categoria->nome }}" class="img-thumbnail" style="max-width: 60px; max-height: 40px; object-fit: cover;" onclick="showImage('{{ asset('storage/' . $categoria->imagem) }}', '{{ $categoria->nome }}')">
+                                        @else
+                                            <i class="fas fa-photo-video text-muted" style="font-size: 24px;"></i>
                                         @endif
                                     </td>
                                     <td>{{ $categoria->nome }}</td>
@@ -75,6 +83,16 @@
             max-width: 100%;
             height: auto;
         }
+        
+        .img-thumbnail:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        
+        .table td {
+            vertical-align: middle;
+        }
     </style>
 @stop
 
@@ -108,7 +126,7 @@
                 pageLength: 10,
                 responsive: true,
                 columnDefs: [
-                    { orderable: false, targets: [0, 3] } // Desabilita ordenação nas colunas de ícone e ações
+                    { orderable: false, targets: [0, 1, 4] } // Desabilita ordenação nas colunas de ícone, imagem e ações
                 ]
             });
 
@@ -158,6 +176,18 @@
                         );
                     });
                 }
+            });
+        }
+
+        function showImage(imageUrl, title) {
+            Swal.fire({
+                title: title,
+                imageUrl: imageUrl,
+                imageWidth: 400,
+                imageHeight: 300,
+                imageAlt: title,
+                confirmButtonText: 'Fechar',
+                showCloseButton: true
             });
         }
 
