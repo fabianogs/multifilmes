@@ -21,7 +21,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe></div>
                 <div class="block mg-top-30">
-                    <p class="block-text">{{ $post->conteudo }}</p>
+                    <div class="block-text">{!! $post->conteudo !!}</div>
                 </div>
             </div>
         </div>
