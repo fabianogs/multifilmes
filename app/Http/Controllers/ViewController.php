@@ -24,7 +24,6 @@ class ViewController extends Controller
         $solucoes = Solucao::all()->count();
         $posts = Post::all()->count();
         return view('dashboard', compact('marcas', 
-        'produtos', 
         'categorias', 
         'solucoes',
         'unidades',
