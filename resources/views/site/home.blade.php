@@ -23,7 +23,7 @@
                             controle solar, segurança, estilo em decoração, personalizações de automóveis e imóveis. Seja no
                             seu imóvel ou no seu automóvel, sempre prestaremos o melhor serviço de acordo com sua demanda.
                         </p>
-                        <div class="d-flex mg-top-30"><a href="{{ route('site.quem-somos') }}" class="btn">saiba mais</a></div>
+                        <div class="d-flex mg-top-30"><a href="{{ route('site.quem-somos') }}" class="btn">Saia Mais</a></div>
                     </article>
                 </div>
             </div>
