@@ -35,19 +35,6 @@
                 <a href="#">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{$produtos}}</h3>
-                            <p>Produtos</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-fw fa-shopping-cart"></i>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-6">
-                <a href="#">
-                    <div class="small-box bg-info">
-                        <div class="inner">
                             <h3>{{$unidades}}</h3>
                             <p>Unidades</p>
                         </div>
