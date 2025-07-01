@@ -3,7 +3,7 @@
 @section('content')
     <main class="in in-blog">
         <section class="section-banner">
-            <div class="item"><img src="img/banner.jpg" alt="">
+            <div class="item"><img src="{{ asset('storage/' . $banners->imagem) }}" alt="">
                 <div class="item-row">
                     <div class="item-text">
                         <h1>Nossas<br>Postagens</h1>

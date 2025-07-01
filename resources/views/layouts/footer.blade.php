@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="row">
         <div class="col md-up-offset-1 md-up-4 sm-6">
-            <div class="bd"><a href="home" class="footer-logo"><img src="img/logo.png" alt=""></a>
+            <div class="bd"><a href="{{ route('site.home') }}" class="footer-logo"><img src="{{ asset('img/logo.png') }}" alt=""></a>
                 <div class="div"><span>MULTIFILMES WINDOW FILM LTDA</span> CNPJ: 13.499.040/0001-71</div>
                 <div class="div"><span>Central de Negócios</span> Rua Lêda Vassimon, 570 – Jd. Nova Aliança<br>Ribeirão
                     Preto - SP (16) 3234-5002</div>
@@ -33,7 +33,7 @@
                     <li><a href="#">Automotivas</a></li>
                     <li><a href="#">Residenciais e Corporativas</a></li>
                     <li><a href="{{route('site.unidades')}}">Unidades</a></li>
-                    <li><a href="blog">Universo Multifilmes</a></li>
+                    <li><a href="{{ route('site.blog') }}">Universo Multifilmes</a></li>
                 </ul>
             </nav>
             <div class="footer-form">
@@ -54,7 +54,7 @@
     <div class="row">
         <div class="col md-up-offset-1 md-up-10">
             <div class="footer-franchisee">
-                <div class="image"><img src="img/junior.png" alt=""></div>
+                <div class="image"><img src="{{ asset('img/junior.png') }}" alt=""></div>
                 <div class="text">
                     <h3>Seja um <strong>FRANQUEADO</strong></h3>
                     <p>Se você esta em busca do primeiro negócio, é um empreendedor, é apaixonado por carro, casas
@@ -64,7 +64,7 @@
                 </div>
                 <div class="d-flex jc-bet a-center mg-top-40"><a href="https://sejafranqueado.multifilmes.com.br/"
                         target="_blank" class="btn">QUERO SABER MAIS</a>
-                    <div class="d-flex a-center"><img src="img/logo2.png" alt=""> <img src="img/abf.png"
+                    <div class="d-flex a-center"><img src="{{ asset('img/logo2.png') }}" alt=""> <img src="{{ asset('img/abf.png') }}"
                             alt="" class="mg-left-20"></div>
                 </div>
             </div>

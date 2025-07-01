@@ -50,18 +50,32 @@ class ViewController extends Controller
     public function categorias_solucao($slug_solucao){
         $banners = Banner::where('ativo', 1)->first();
         $solucao = Solucao::where('slug', $slug_solucao)->with('categorias')->first();
+        $config = Config::first();
     
-        return view('site.solucoes', compact('solucao', 'banners'));
+        return view('site.solucoes', compact('solucao', 'banners', 'config'));
     }
 
     public function blog(){
-
+        $banners = Banner::where('ativo', 1)->first();
         $posts = Post::all();
-        return view('site.blog', compact('posts'));
+        $config = Config::first();
+        return view('site.blog', compact('posts', 'config', 'banners'));
     }
 
     public function post($slug){
+        $banners = Banner::where('ativo', 1)->first();
         $post = Post::where('slug', $slug)->with('imagensGaleria')->first();
-        return view('site.post', compact('post'));
+        $config = Config::first();
+        return view('site.post', compact('post', 'config', 'banners'));
+    }
+
+    public function quemSomos(){
+        $config = Config::first();
+        return view('site.quem-somos', compact('config'));
+    }
+
+    public function unidades(){
+        $config = Config::first();
+        return view('site.unidades', compact('config'));
     }
 }

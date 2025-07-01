@@ -10,22 +10,12 @@ use App\Http\Controllers\SeoController;
 
 Route::get('/', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
 Route::get('/home', [App\Http\Controllers\ViewController::class, 'home'])->name('site.home');
-Route::get('/quem-somos', function () {
-    return view('site.quem-somos');
-})->name('site.quem-somos');
+Route::get('/quem-somos', [App\Http\Controllers\ViewController::class, 'quemSomos'])->name('site.quem-somos');
 // Route::get('/solucoes/{slug}', [App\Http\Controllers\ViewController::class, 'solucoes'])->name('site.solucoes');
 Route::get('/solucoes/{slug_solucao}', [App\Http\Controllers\ViewController::class, 'categorias_solucao'])->name('site.categorias_solucao');
 Route::get('/blog', [App\Http\Controllers\ViewController::class, 'blog'])->name('site.blog');
-Route::get('/post', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
-Route::get('/unidades', function () {
-    return view('site.unidades');
-})->name('site.unidades');
-Route::get('/produto/{slug}', [App\Http\Controllers\ViewController::class, 'produto'])->name('site.produto');
-
-// Grupo de rotas do site
-Route::prefix('site')->group(function () {
-    Route::get('/post/{slug}', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
-});
+Route::get('/unidades', [App\Http\Controllers\ViewController::class, 'unidades'])->name('site.unidades');
+Route::get('/post/{slug}', [App\Http\Controllers\ViewController::class, 'post'])->name('site.post');
 
 Route::middleware('auth')->prefix('area_restrita')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -108,15 +98,15 @@ Route::middleware('auth')->prefix('area_restrita')->group(function () {
         Route::put('/marcas/{id}', [App\Http\Controllers\MarcaController::class, 'update'])->name('marcas.update');
         Route::delete('/marcas/{id}', [App\Http\Controllers\MarcaController::class, 'destroy'])->name('marcas.destroy');
 
-        // Produtos
-        Route::get('/produtos', [App\Http\Controllers\ProdutoController::class, 'index'])->name('produtos.index');
-        Route::get('/produtos/create', [App\Http\Controllers\ProdutoController::class, 'create'])->name('produtos.create');
-        Route::post('/produtos', [App\Http\Controllers\ProdutoController::class, 'store'])->name('produtos.store');
-        Route::get('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'show'])->name('produtos.show');
-        Route::get('/produtos/{id}/edit', [App\Http\Controllers\ProdutoController::class, 'edit'])->name('produtos.edit');
-        Route::put('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'update'])->name('produtos.update');
-        Route::delete('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produtos.destroy');
-        Route::post('/produtos/set_ativo/{id}', [App\Http\Controllers\ProdutoController::class, 'set_ativo'])->name('produtos.set_ativo');
+        // Produtos - Comentado temporariamente pois ProdutoController não existe
+        // Route::get('/produtos', [App\Http\Controllers\ProdutoController::class, 'index'])->name('produtos.index');
+        // Route::get('/produtos/create', [App\Http\Controllers\ProdutoController::class, 'create'])->name('produtos.create');
+        // Route::post('/produtos', [App\Http\Controllers\ProdutoController::class, 'store'])->name('produtos.store');
+        // Route::get('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'show'])->name('produtos.show');
+        // Route::get('/produtos/{id}/edit', [App\Http\Controllers\ProdutoController::class, 'edit'])->name('produtos.edit');
+        // Route::put('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'update'])->name('produtos.update');
+        // Route::delete('/produtos/{id}', [App\Http\Controllers\ProdutoController::class, 'destroy'])->name('produtos.destroy');
+        // Route::post('/produtos/set_ativo/{id}', [App\Http\Controllers\ProdutoController::class, 'set_ativo'])->name('produtos.set_ativo');
 
         // Posts
         Route::get('/posts', [App\Http\Controllers\PostController::class, 'index'])->name('posts.index');

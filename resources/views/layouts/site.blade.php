@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
-@extends('layouts.header')
-
 <head>
 	<title>Multifilmes | Window Film</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -35,9 +33,9 @@
 </head>
 
 <body>
+	@include('layouts.header')
 	@yield('content')
+	@include('layouts.footer')
 </body>
-
-@extends('layouts.footer')
 
 </html>
