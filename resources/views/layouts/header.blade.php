@@ -10,10 +10,13 @@
                   <li>
                     <a>Soluções</a>
                     <div class="header-menu-dropdown">
-                      <a href="">Lorem ipsum dolor</a>
-                      <a href="">Lorem ipsum dolor</a>
-                      <a href="">Lorem ipsum dolor</a>
-                      <a href="">Lorem ipsum dolor</a>
+                      @if(isset($headerSolucoes) && $headerSolucoes->count() > 0)
+                        @foreach($headerSolucoes as $solucao)
+                          <a href="{{ route('site.categorias_solucao', $solucao->slug) }}">{{ $solucao->titulo }}</a>
+                        @endforeach
+                      @else
+                        <a href="">Nenhuma solução cadastrada</a>
+                      @endif
                     </div>
                   </li>
                   <li><a href="home#unidades">unidades</a> </li>
