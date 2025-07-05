@@ -80,12 +80,13 @@
                                     <p>Conheça nossas unidades espalhadas pelo mundo. Selecione uma das cidades na listagem abaixo:</p>
                                 </li>
                                 <li class="d-flex mg-top-30">
-                                    <select name="">
+                                    <select name="unidade_select" id="unidade_select">
+                                        <option value="">Selecione uma unidade</option>
                                         @foreach ($unidades as $unidade)
-                                            <option value="{{$unidade->id}}">{{ $unidade->cidade }}</option>
+                                            <option value="{{$unidade->id}}" data-url="{{$unidade->url}}">{{ $unidade->cidade }}</option>
                                         @endforeach
                                     </select> 
-                                    <button>OK</button></li>
+                                    <button type="button" id="btn_unidade" onclick="abrirUnidade()">OK</button></li>
                             </ul>
                         </form><img src="img/units.jpg" alt="">
                     </div>
@@ -137,4 +138,23 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            function abrirUnidade() {
+                const select = document.getElementById('unidade_select');
+                const selectedOption = select.options[select.selectedIndex];
+                
+                if (selectedOption.value && selectedOption.dataset.url) {
+                    const url = selectedOption.dataset.url;
+                    // Verifica se a URL já tem protocolo, se não tiver adiciona https://
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        window.open('https://' + url, '_blank');
+                    } else {
+                        window.open(url, '_blank');
+                    }
+                } else {
+                    alert('Por favor, selecione uma unidade.');
+                }
+            }
+        </script>
 @endsection
