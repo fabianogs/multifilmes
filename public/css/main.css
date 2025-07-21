@@ -6551,12 +6551,12 @@ form ul li textarea {
 	text-transform: uppercase;
 }
 .section-about {
-	max-width: 1530px;
+	max-width: 1240px;
 	margin: -180px auto 0;
 	position: relative;
 	z-index: 1;
 	background-color: #4b4b4b;
-	padding: 40px 0;
+	padding: 20px 0;
 	color: #fff;
 	border-radius: 10px;
 }
