@@ -9,25 +9,38 @@ use App\Models\Unidade;
 use App\Models\Post;
 use App\Models\Config;
 use App\Models\Banner;
+use App\Models\User;
 
 class ViewController extends Controller
 {
     public function index()
     {
-
+        // Contadores básicos
         $marcas = Marca::all()->count();
         $categorias = Categoria::all()->count();
         $solucoes = Solucao::all()->count();
         $unidades = Unidade::all()->count();
-        $solucoes = Solucao::all()->count();
         $posts = Post::all()->count();
-        return view('dashboard', compact('marcas', 
-        'categorias', 
-        'solucoes',
-        'unidades',
-        'solucoes',
-        'posts'
-    ));
+        $banners = Banner::all()->count();
+        $usuarios = User::all()->count();
+        $configs = Config::all()->count();
+
+        // Dados recentes para as tabelas
+        $postsRecentes = Post::orderBy('created_at', 'desc')->limit(5)->get();
+        $bannersAtivos = Banner::where('ativo', 1)->orderBy('created_at', 'desc')->limit(5)->get();
+
+        return view('dashboard', compact(
+            'marcas', 
+            'categorias', 
+            'solucoes',
+            'unidades',
+            'posts',
+            'banners',
+            'usuarios',
+            'configs',
+            'postsRecentes',
+            'bannersAtivos'
+        ));
     }
 
     public function home(){

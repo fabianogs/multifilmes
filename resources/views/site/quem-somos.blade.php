@@ -35,24 +35,30 @@
         <div class="row mg-top-40 a-center">
             <div class="col md-up-5 md-up-offset-1 sm-6">
                 <div class="block mg-bottom-20">
-                    <h3 class="block-title">Missão</h3>
-                    <p class="block-text">Ser a maior rede de prestação de serviços para aplicação de películas de
-                        controle solar do Brasil. Atender consumidores finais, arquitetos, engenheiros, concessionários
-                        de veículos e empresas parceiras na terceirização de toda estrutura para aplicação de películas,
-                        fornecendo equipe de aplicação e suporte necessário para o desempenho do trabalho dentro da
-                        estrutura de clientes.</p>
+                    <h3 class="block-title">Nossa Missão</h3>
+                    <p class="block-text">Ser a maior e mais confiável rede de serviços especializados na aplicação de películas de controle solar do Brasil.
+                        Atendemos consumidores finais, arquitetos, engenheiros, concessionárias e empresas, oferecendo soluções completas, com equipe técnica, suporte operacional e foco total na qualidade.</p>
                 </div>
+                <div class="block">
+                    <h3 class="block-title">Nossa Visão</h3>
+                    <p class="block-text">Estar na mente e no coração de nossos clientes, franqueados, fornecedores e colaboradores como uma marca de referência em tudo o que faz. Queremos ser sinônimo de confiança, inovação e excelência.</p>
+                </div>                
             </div>
             <div class="col md-up-5 sm-6">
-                <div class="block">
-                    <h3 class="block-title">Visão</h3>
-                    <p class="block-text">Ser referência junto aos clientes, franqueados, fornecedores e colaboradores
-                        na aplicação de películas de controle solar e antivandalismo.</p>
-                </div>
+
                 <div class="block mg-top-20">
                     <h3 class="block-title">Valores</h3>
-                    <p class="block-text">Ética, respeito, trabalho em equipe, transparência e compromisso com
-                        resultados.</p>
+                    <p class="block-text">Na Multifilmes, cada decisão é guiada pelos nossos princípios:
+                    <br>- Ética: Agimos com integridade e responsabilidade em todas as relações.
+                    <br>- Respeito: Valorizamos as pessoas e suas histórias.
+                    <br>- Trabalho em equipe: Juntos vamos mais longe, com colaboração e propósito.
+                    <br>- Transparência: Comunicação aberta, clara e honesta sempre.
+                    <br>- Compromisso com resultados: Buscamos a excelência em cada projeto, grande ou pequeno.
+                    </p>
+                    <p class="block-text">Mais do que películas, uma rede de confiança. A Multifilmes não é apenas uma marca. É uma comunidade formada por pessoas apaixonadas por qualidade, por transformar espaços e por entregar resultados que realmente fazem a diferença.</p>
+                    <p class="block-text">Seja para proteger seu carro, sua casa, sua empresa ou até construir um novo negócio com a nossa marca, você pode contar com a gente.
+                        Multifilmes: segurança, estilo e confiança de ponta a ponta.</p>
+
                 </div>
             </div>
         </div>

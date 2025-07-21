@@ -16,13 +16,7 @@
                 <div class="col md-up-offset-1 md-up-10">
                     <article>
                         <h3>Conheça a <strong>MULTIFILMES</strong></h3>
-                        <p>A Multifilmes nasceu em 1999, especializada em aplicação de películas de alta performance para
-                            vidros. Estamos presentes no Brasil e Estados Unidos, com operações nos dois países. Somos
-                            apaixonados pelo que fazemos, não há nada mais importante para nós do que a excelência em nossos
-                            serviços e a satisfação total do cliente. Temos produtos que oferecem conforto, privacidade,
-                            controle solar, segurança, estilo em decoração, personalizações de automóveis e imóveis. Seja no
-                            seu imóvel ou no seu automóvel, sempre prestaremos o melhor serviço de acordo com sua demanda.
-                        </p>
+                        <p>A Multifilmes nasceu em 1999 com uma paixão: oferecer soluções de alta performance em películas para vidros. Presente em mais de 20 estados do Brasil, nossa maior prioridade é a sua satisfação total e a excelência em cada serviço.</p>
                         <div class="d-flex mg-top-30"><a href="{{ route('site.quem-somos') }}" class="btn">Saia Mais</a></div>
                     </article>
                 </div>
