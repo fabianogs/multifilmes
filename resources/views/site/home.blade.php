@@ -99,9 +99,9 @@
                 <div class="col">
                     <div class="carousel" data-ix="carousel" data-carousel-autoplay="false" data-carousel-loop="true"
                         data-carousel-margin="20" data-carousel-margin-991="20" 
-                        data-carousel-items="{{ count($posts) }}"
-                        data-carousel-items-1200="{{ count($posts) }}" 
-                        data-carousel-items-991="{{ count($posts) }}" 
+                        data-carousel-items="3"
+                        data-carousel-items-1200="3" 
+                        data-carousel-items-991="3" 
                         data-carousel-items-767="2"
                         data-carousel-items-480="1" 
                         data-carousel-items-0="1" 
