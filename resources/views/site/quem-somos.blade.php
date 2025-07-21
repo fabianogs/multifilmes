@@ -32,21 +32,20 @@
                 </div>
             </div>
         </div>
-        <div class="row mg-top-40 a-center">
+        <div class="row mg-top-40 a-center" style="display: flex; align-items: flex-start;">
             <div class="col md-up-5 md-up-offset-1 sm-6">
-                <div class="block mg-bottom-20">
+                <div class="block" style="margin-bottom: 30px;">
                     <h3 class="block-title">Nossa Missão</h3>
                     <p class="block-text">Ser a maior e mais confiável rede de serviços especializados na aplicação de películas de controle solar do Brasil.
                         Atendemos consumidores finais, arquitetos, engenheiros, concessionárias e empresas, oferecendo soluções completas, com equipe técnica, suporte operacional e foco total na qualidade.</p>
                 </div>
-                <div class="block">
+                <div class="block mg-top-30">
                     <h3 class="block-title">Nossa Visão</h3>
                     <p class="block-text">Estar na mente e no coração de nossos clientes, franqueados, fornecedores e colaboradores como uma marca de referência em tudo o que faz. Queremos ser sinônimo de confiança, inovação e excelência.</p>
                 </div>                
             </div>
             <div class="col md-up-5 sm-6">
-
-                <div class="block mg-top-20">
+                <div class="block" style="margin-bottom: 30px;">
                     <h3 class="block-title">Valores</h3>
                     <p class="block-text">Na Multifilmes, cada decisão é guiada pelos nossos princípios:
                     <br>- Ética: Agimos com integridade e responsabilidade em todas as relações.
@@ -58,7 +57,6 @@
                     <p class="block-text">Mais do que películas, uma rede de confiança. A Multifilmes não é apenas uma marca. É uma comunidade formada por pessoas apaixonadas por qualidade, por transformar espaços e por entregar resultados que realmente fazem a diferença.</p>
                     <p class="block-text">Seja para proteger seu carro, sua casa, sua empresa ou até construir um novo negócio com a nossa marca, você pode contar com a gente.
                         Multifilmes: segurança, estilo e confiança de ponta a ponta.</p>
-
                 </div>
             </div>
         </div>
