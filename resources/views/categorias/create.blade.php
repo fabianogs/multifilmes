@@ -45,7 +45,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imagem">Imagem (520x300px)</label>
+                            <label for="imagem">Imagem (238x201px)</label>
                             <div class="input-group">
                                 <div class="custom-file">
                                     <input type="file" name="imagem" id="imagem" class="custom-file-input" onchange="previewImagem(this)">
